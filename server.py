@@ -51,11 +51,11 @@ def getTranscription():
     
     file_uri = "s3://buketa/" + file_key
 
-    print("I will place transcript in " + file_key[:-3] + "json")
-    transcribe_file('Example-job', file_uri, transcribe_client, file_key[:-3] + "json")
+    print("I will place transcript in " + file_key[:-4] + "json")
+    transcribe_file('Example-job', file_uri, transcribe_client, file_key[:-4] + "json")
 
     # store file in current folder.
-    authenticated_client.download_file("buketa", file_key[:-3] + "json", "helloback.json")
+    authenticated_client.download_file("buketa", file_key[:-4] + "json", "helloback.json")
 
     with open('helloback.json', 'r') as f:
         json_data = json.load(f)

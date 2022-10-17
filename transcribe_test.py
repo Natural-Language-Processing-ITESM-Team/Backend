@@ -7,7 +7,7 @@ def transcribe_file(job_name, file_uri, transcribe_client, output_key):
     transcribe_client.start_transcription_job(
         TranscriptionJobName=job_name,
         Media={'MediaFileUri': file_uri},
-        MediaFormat='wav',
+        MediaFormat='webm',
         LanguageCode='en-US',
         OutputBucketName="buketa",
         OutputKey=output_key
