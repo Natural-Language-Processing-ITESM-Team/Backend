@@ -28,6 +28,12 @@ transcribe_client = boto3.client('transcribe',
         aws_session_token=session_token,
         region_name=region)
 
+# LexV2 client uses 'lexv2-runtime'
+lex_client = boto3.client('lexv2-runtime',
+        aws_access_key_id=acces_key,
+        aws_secret_access_key=secret_access_key,
+        aws_session_token=session_token,
+        region_name=region)
 
 app = Flask(__name__)
 CORS(app)
@@ -60,8 +66,24 @@ def getTranscription():
     with open('helloback.json', 'r') as f:
         json_data = json.load(f)
 
+
+    transcript = json_data["results"]["transcripts"][0]["transcript"]
+
+    
     # boom bam bop, badabop boom POW return transcript
-    return json_data["results"]["transcripts"][0]["transcript"]
+    #return json_data["results"]["transcripts"][0]["transcript"]
+    
+    response = lex_client.recognize_text(
+        botId='40JABLDQYI',
+        botAliasId='TSTALIASID',
+        localeId='en_US',
+        sessionId="test_session",
+        text=transcript)
+    print(f"prompt {transcript}")
+    print(f"response {response}")
+    return response
+
+    
 
     
 
