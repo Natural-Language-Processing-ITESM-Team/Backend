@@ -1,3 +1,4 @@
+from asyncore import poll
 from flask import request
 from flask import Flask
 import boto3
@@ -6,6 +7,7 @@ from flask_cors import CORS
 from transcribe_test import transcribe_file
 from dotenv import load_dotenv
 import os
+from polly_test import get_polly_audio
 
 load_dotenv("secrets.env")
 
@@ -30,6 +32,12 @@ transcribe_client = boto3.client('transcribe',
 
 # LexV2 client uses 'lexv2-runtime'
 lex_client = boto3.client('lexv2-runtime',
+        aws_access_key_id=acces_key,
+        aws_secret_access_key=secret_access_key,
+        aws_session_token=session_token,
+        region_name=region)
+
+polly_client = boto3.client('polly',
         aws_access_key_id=acces_key,
         aws_secret_access_key=secret_access_key,
         aws_session_token=session_token,
@@ -69,6 +77,8 @@ def getTranscription():
 
     transcript = json_data["results"]["transcripts"][0]["transcript"]
 
+    if len(transcript) == 0:
+        transcript = "transcript empty"
     
     # boom bam bop, badabop boom POW return transcript
     #return json_data["results"]["transcripts"][0]["transcript"]
@@ -81,7 +91,23 @@ def getTranscription():
         text=transcript)
     print(f"prompt {transcript}")
     print(f"response {response}")
-    return response
+
+    if( 'messages' in response):
+        polly_text = response['messages'][0]['content']
+    else:
+        polly_text = 'I didnt understand'
+
+    print("message for polly", polly_text)
+
+    link = get_polly_audio(polly_client, file_key[:-4] + "mp3", polly_text)
+    return link
+    # store file in current folder.
+    # authenticated_client.download_file("buketa", file_key[:-4] + "mp3", "audio_for_client.mp3")
+
+    #with open('audio_for_client.mp3', 'r') as f:
+    #    return f
+
+    
 
     
 
