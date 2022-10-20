@@ -23,6 +23,7 @@ def transcribe_file(job_name, file_uri, transcribe_client, output_key):
             if job_status == 'COMPLETED':
                 print(f"Transcript ready to be downloaded\n")
                 print(f"\t{job['TranscriptionJob']['Transcript']['TranscriptFileUri']}.")
+                response = transcribe_client.delete_transcription_job(TranscriptionJobName=job_name)
             break
         else:
             print(f"Waiting for {job_name}. Current status is {job_status}.")

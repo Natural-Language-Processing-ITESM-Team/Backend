@@ -77,6 +77,10 @@ def getTranscription():
 
     transcript = json_data["results"]["transcripts"][0]["transcript"]
 
+    # Delete transcript object for next round.
+    authenticated_client.delete_object(Bucket='buketa', Key=file_key)
+
+
     if len(transcript) == 0:
         transcript = "transcript empty"
     
@@ -87,7 +91,7 @@ def getTranscription():
         botId='40JABLDQYI',
         botAliasId='TSTALIASID',
         localeId='en_US',
-        sessionId="test_session",
+        sessionId="test_session2",
         text=transcript)
     print(f"prompt {transcript}")
     print(f"response {response}")
