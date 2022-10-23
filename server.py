@@ -8,6 +8,8 @@ from transcribe_test import transcribe_file
 from dotenv import load_dotenv
 import os
 from polly_test import get_polly_audio
+from azure_speech_to_text import recognize_from_file
+
 
 load_dotenv("secrets.env")
 
@@ -63,29 +65,36 @@ def getTranscription():
 
     print(f"I server am going to ask for transcription for {file_key}")
     
+    
+    # PROCESS FOR AWS TRANSCRIPTION
+    """
     file_uri = "s3://buketa/" + file_key
-
     print("I will place transcript in " + file_key[:-4] + "json")
     transcribe_file('Example-job', file_uri, transcribe_client, file_key[:-4] + "json")
-
     # store file in current folder.
     authenticated_client.download_file("buketa", file_key[:-4] + "json", "helloback.json")
-
     with open('helloback.json', 'r') as f:
         json_data = json.load(f)
-
-
     transcript = json_data["results"]["transcripts"][0]["transcript"]
-
     # Delete transcript object for next round.
     authenticated_client.delete_object(Bucket='buketa', Key=file_key)
+    """
 
+    # PROCESS FOR AZURE TRANSCRIPTION
+     # Download audio file from s3.
+    authenticated_client.download_file("buketa", file_key, "client.webm")
+    # convert to wav.
+    os.system('ffmpeg -i "client.webm" -vn "client.wav"')
+    transcript = recognize_from_file("client.wav")
+ 
+    authenticated_client.delete_object(Bucket='buketa', Key=file_key)
+
+    # Remove files generated in previous steps (Azure).
+    os.system('rm -rf client.wav')
+    os.system('rm -rf client.webm')
 
     if len(transcript) == 0:
         transcript = "transcript empty"
-    
-    # boom bam bop, badabop boom POW return transcript
-    #return json_data["results"]["transcripts"][0]["transcript"]
     
     response = lex_client.recognize_text(
         botId='40JABLDQYI',
