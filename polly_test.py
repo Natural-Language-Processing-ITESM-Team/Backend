@@ -29,8 +29,8 @@ def get_polly_audio(polly_client, output_key, text):
     synthesis_job = polly_client.start_speech_synthesis_task(
         Text=text,
         OutputFormat='mp3',
-        LanguageCode='en-US',
-        VoiceId='Aditi',
+        LanguageCode='es-US',
+        VoiceId='Penelope',
         OutputS3BucketName = "buketa",
         OutputS3KeyPrefix = output_key
     )

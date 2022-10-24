@@ -13,7 +13,7 @@ load_dotenv("secrets.env")
 
 def recognize_from_file(file_name):
     speech_config = speechsdk.SpeechConfig(subscription=os.environ.get('AZURE_SPEECH_KEY'), region=os.environ.get('AZURE_SPEECH_REGION'))
-    speech_config.speech_recognition_language="en-US"
+    speech_config.speech_recognition_language="es-MX"
 
     audio_config = speechsdk.AudioConfig(filename=file_name)
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
@@ -31,4 +31,4 @@ def recognize_from_file(file_name):
         if cancellation_details.reason == speechsdk.CancellationReason.Error:
             print("Error details: {}".format(cancellation_details.error_details))
             print("Did you set the speech resource key and region values?")
-    return
+    return ""
