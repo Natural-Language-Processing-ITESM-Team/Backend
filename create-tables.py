@@ -28,7 +28,8 @@ db_cursor.execute( \
 
 db_cursor.execute( \
     """
-    CREATE TABLE STTBenchmarks(metricId INT NOT NULL,
+    CREATE TABLE STTBenchmarks(STTBenchmarkId INT NOT NULL PRIMARY KEY AUTO_INCREMENT
+                               metricId INT NOT NULL,
                                STTServiceId INT NOT NULL,
                                benchmarkValue FLOAT NOT NULL,
                                FOREIGN KEY (metricId)
@@ -43,7 +44,8 @@ db_cursor.execute( \
 
 db_cursor.execute(
     """
-    CREATE TABLE TTSBenchmarks(metricId INT NOT NULL,
+    CREATE TABLE TTSBenchmarks(TTSBenchmarkId INT NOT NULL PRIMARY KEY AUTO_INCREMENT
+                               metricId INT NOT NULL,
                                TTSServiceId INT NOT NULL,
                                benchmarkValue FLOAT NOT NULL,
                                FOREIGN KEY (metricId)
@@ -52,9 +54,10 @@ db_cursor.execute(
                                FOREIGN KEY (TTSServiceId)
                                    REFERENCES TTSServices(TTSServiceId)
                                    ON UPDATE CASCADE ON DELETE RESTRICT,
-                               PRIMARY KEY (metricId, TTSServiceId))                             
+                               )                             
     
     """)
+
 
 
 
