@@ -43,8 +43,8 @@ db_cursor.execute( \
 
 db_cursor.execute(
     """
-    CREATE TABLE TTSBenchmarks(metricId INT NOT NULL PRIMARY KEY,
-                               TTSServiceId INT NOT NULL PRIMARY KEY,
+    CREATE TABLE TTSBenchmarks(metricId INT NOT NULL,
+                               TTSServiceId INT NOT NULL,
                                benchmarkValue FLOAT NOT NULL,
                                FOREIGN KEY (metricId)
                                    REFERENCES Metrics(metricId)
