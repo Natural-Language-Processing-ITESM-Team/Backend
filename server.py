@@ -70,7 +70,7 @@ def hello_world():
 @app.route('/getTranscription', methods=['POST'])
 def getTranscription():
     global authenticated_client
-    
+    print("route getTranscription")
     # The way to get my form fields
     #request.form[]
 
@@ -81,7 +81,7 @@ def getTranscription():
     print(f"stt measure is {stt_measure}")
 
     print(f"I server am going to ask for transcription for {file_key}")
-    return
+    
     # El famoso conmutador para stt
     db_cursor.execute( \
     """select s.name, avg(benchmarkValue) as avg_benchmark
