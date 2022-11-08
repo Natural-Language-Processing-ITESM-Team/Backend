@@ -12,22 +12,22 @@ db_cursor.execute( \
 
 db_cursor.execute( \
     """IF OBJECT_ID('Ultron.STTServices', 'U') IS NOT NULL 
-       DROP TABLE dbo.STTServices; 
+       DROP TABLE Ultron.STTServices; 
     """)
 
 db_cursor.execute( \
     """IF OBJECT_ID('Ultron.TTSServices', 'U') IS NOT NULL 
-       DROP TABLE dbo.TTSServices; 
+       DROP TABLE Ultron.TTSServices; 
     """)
 
 db_cursor.execute( \
     """IF OBJECT_ID('Ultron.STTBenchmarks', 'U') IS NOT NULL 
-       DROP TABLE dbo.STTBenchmarks; 
+       DROP TABLE Ultron.STTBenchmarks; 
     """)
 
 db_cursor.execute( \
     """IF OBJECT_ID('Ultron.TTSBenchmarks', 'U') IS NOT NULL 
-       DROP TABLE dbo.TTSBenchmarks; 
+       DROP TABLE Ultron.TTSBenchmarks; 
     """)
 
 
