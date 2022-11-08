@@ -12,7 +12,14 @@ from azure_speech_to_text import recognize_from_file
 import dialogflow
 from google.api_core.exceptions import InvalidArgument
 from flask import jsonify
+import time
+import pymysql
 
+db_connection = pymysql.connect( \
+    host="benchmarksdb.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
+    user="admin", password="vpcOwnChunkCloud", db="Ultron", port=3306, autocommit=True)
+
+db_cursor = db_connection.cursor()
 
 load_dotenv("secrets.env")
 
@@ -73,6 +80,8 @@ def getTranscription():
 
     print(f"I server am going to ask for transcription for {file_key}")
     
+    # El famoso conmutador
+
     
     # PROCESS FOR AWS TRANSCRIPTION
     """
@@ -89,12 +98,13 @@ def getTranscription():
     """
 
     # PROCESS FOR AZURE TRANSCRIPTION
-     # Download audio file from s3.
+    # Download audio file from s3.
     authenticated_client.download_file("buketa", file_key, "client.webm")
     # convert to wav.
     os.system('ffmpeg -i "client.webm" -vn "client.wav"')
     transcript = recognize_from_file("client.wav")
- 
+    
+
     authenticated_client.delete_object(Bucket='buketa', Key=file_key)
 
     # Remove files generated in previous steps (Azure).

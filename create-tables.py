@@ -157,7 +157,7 @@ db_cursor.execute( \
 
 rows = db_cursor.fetchall()
 for row in rows:
-    print(row)
+    print(type(row))
 
 
 # intermediate table after parent tables so that references exist.
