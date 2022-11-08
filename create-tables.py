@@ -8,26 +8,22 @@ db_connection   = pymysql.connect( \
 db_cursor = db_connection.cursor()
 
 db_cursor.execute( \
-    """IF OBJECT_ID('Ultron.Metrics', 'U') IS NOT NULL DROP TABLE Ultron.Metrics;""")
+    """DROP TABLE IF EXISTS Metrics""")
 
 db_cursor.execute( \
-    """IF OBJECT_ID('Ultron.STTServices', 'U') IS NOT NULL 
-       DROP TABLE Ultron.STTServices; 
+    """DROP TABLE IF EXISTS STTServices
     """)
 
 db_cursor.execute( \
-    """IF OBJECT_ID('Ultron.TTSServices', 'U') IS NOT NULL 
-       DROP TABLE Ultron.TTSServices; 
+    """DROP TABLE IF EXISTS TTSServices
     """)
 
 db_cursor.execute( \
-    """IF OBJECT_ID('Ultron.STTBenchmarks', 'U') IS NOT NULL 
-       DROP TABLE Ultron.STTBenchmarks; 
+    """DROP TABLE IF EXISTS STTBenchmarks
     """)
 
 db_cursor.execute( \
-    """IF OBJECT_ID('Ultron.TTSBenchmarks', 'U') IS NOT NULL 
-       DROP TABLE Ultron.TTSBenchmarks; 
+    """DROP TABLE IF EXISTS TTSBenchmarks
     """)
 
 
