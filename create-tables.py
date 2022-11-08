@@ -135,7 +135,8 @@ db_cursor.execute( \
     """select s.name, avg(benchmarkValue) 
     from Metrics as m, STTBenchmarks as b, STTServices as s 
     where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
-    group by s.name desc""")
+    group by s.name desc
+    """)
 
 rows = db_cursor.fetchall()
 for row in rows:
