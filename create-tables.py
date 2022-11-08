@@ -156,8 +156,10 @@ db_cursor.execute( \
     """)
 
 rows = db_cursor.fetchall()
+print(rows)
 for row in rows:
-    print(type(row))
+    service = row[0]
+    benchmark_value = row[1]
 
 
 # intermediate table after parent tables so that references exist.
