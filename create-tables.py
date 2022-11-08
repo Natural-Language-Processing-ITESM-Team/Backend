@@ -8,7 +8,7 @@ db_connection   = pymysql.connect( \
 db_cursor = db_connection.cursor()
 
 db_cursor.execute( \
-    """IF OBJECT_ID('Ultron.Metrics', 'U') IS NOT NULL DROP TABLE dbo.Metrics;""")
+    """IF OBJECT_ID('Ultron.Metrics', 'U') IS NOT NULL DROP TABLE Ultron.Metrics;""")
 
 db_cursor.execute( \
     """IF OBJECT_ID('Ultron.STTServices', 'U') IS NOT NULL 
