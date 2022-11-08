@@ -128,14 +128,30 @@ db_cursor.execute( \
     INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Exactitud"), 
             (SELECT STTServiceId FROM STTServices WHERE name = "Transcribe"), 
-            10000)
+            20000)
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+    VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "Azure"), 
+            1000)
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+    VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "Azure"), 
+            800)
     """)
 
 db_cursor.execute( \
     """select s.name, avg(benchmarkValue) 
     from Metrics as m, STTBenchmarks as b, STTServices as s 
     where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
-    group by s.name""")
+    group by s.name desc""")
 
 rows = db_cursor.fetchall()
 for row in rows:
