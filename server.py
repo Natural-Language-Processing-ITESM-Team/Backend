@@ -94,7 +94,8 @@ def getTranscription():
     rows = db_cursor.fetchall()
     best_stt_service = rows[0][0]
     best_stt_benchmark = rows[0][1]
-
+    # REMOVE THIS WHEN DONE TESTING
+    best_stt_service = "Transcribe"
     if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.
