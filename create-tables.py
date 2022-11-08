@@ -11,14 +11,23 @@ db_cursor.execute( \
     """
     CREATE TABLE Metrics(metricId INT NOT NULL PRIMARY KEY,
                          name VARCHAR(50) NOT NULL,
-                         unit VARCHAR(50) NOT NULL)    
+                         unit VARCHAR(50) NOT NULL)""")    
                                
+db_cursor.execute( \
+    """
     CREATE TABLE TTSServices(TTSServiceId INT NOT NULL PRIMARY KEY,
                              name VARCHAR(50) NOT NULL)
+    """
+)
 
+db_cursor.execute( \
+    """
     CREATE TABLE STTServices(STTServiceId INT NOT NULL PRIMARY KEY,
                              name VARCHAR(50) NOT NULL)
+    """)
 
+db_cursor.execute( \
+    """
     CREATE TABLE STTBenchmarks(metricId INT NOT NULL PRIMARY KEY,
                                STTServiceId INT NOT NULL PRIMARY KEY,
                                benchmarkValue FLOAT NOT NULL,
@@ -28,7 +37,10 @@ db_cursor.execute( \
                                FOREIGN KEY (STTServiceId)
                                    REFERENCES STTServices(STTServiceId)
                                    ON UPDATE CASCADE ON DELETE RESTRICT)  
+    """)
 
+db_cursor.execute(
+    """
     CREATE TABLE TTSBenchmarks(metricId INT NOT NULL PRIMARY KEY,
                                TTSServiceId INT NOT NULL PRIMARY KEY,
                                benchmarkValue FLOAT NOT NULL,
