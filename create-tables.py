@@ -7,6 +7,8 @@ db_connection   = pymysql.connect( \
 
 db_cursor = db_connection.cursor()
 
+db_cursor.execute("DROP TABLE Metrics, STTServices, TTSServices, STTBenchmarks, TTSBenchmarks")
+
 db_cursor.execute( \
     """
     CREATE TABLE Metrics(metricId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
