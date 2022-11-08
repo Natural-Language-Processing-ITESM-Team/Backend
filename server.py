@@ -80,35 +80,42 @@ def getTranscription():
 
     print(f"I server am going to ask for transcription for {file_key}")
     
-    # El famoso conmutador
+    # El famoso conmutador para stt
+    db_cursor.execute( \
+    """select s.name, avg(benchmarkValue) as avg_benchmark
+        from Metrics as m, STTBenchmarks as b, STTServices as s 
+        where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
+        group by s.name
+        order by avg_benchmark asc
+        """)
 
+    rows = db_cursor.fetchall()
+    best_stt_service = rows[0][0]
+    best_stt_benchmark = rows[0][1]
+
+    if best_stt_service == "Azure":
+        # PROCESS FOR AZURE TRANSCRIPTION
+        # Download audio file from s3.
+        authenticated_client.download_file("buketa", file_key, "client.webm")
+        # convert to wav.
+        os.system('ffmpeg -i "client.webm" -vn "client.wav"')
+        transcript = recognize_from_file("client.wav")
+        os.system('rm -rf client.wav')
+
+    elif best_stt_service == "Transcribe":
+        # PROCESS FOR AWS TRANSCRIPTION
+        file_uri = "s3://buketa/" + file_key
+        print("I will place transcript in " + file_key[:-4] + "json")
+        transcribe_file('Example-job', file_uri, transcribe_client, file_key[:-4] + "json")
+        # store file in current folder.
+        authenticated_client.download_file("buketa", file_key[:-4] + "json", "helloback.json")
+        with open('helloback.json', 'r') as f:
+            json_data = json.load(f)
+        transcript = json_data["results"]["transcripts"][0]["transcript"]
+        
     
-    # PROCESS FOR AWS TRANSCRIPTION
-    """
-    file_uri = "s3://buketa/" + file_key
-    print("I will place transcript in " + file_key[:-4] + "json")
-    transcribe_file('Example-job', file_uri, transcribe_client, file_key[:-4] + "json")
-    # store file in current folder.
-    authenticated_client.download_file("buketa", file_key[:-4] + "json", "helloback.json")
-    with open('helloback.json', 'r') as f:
-        json_data = json.load(f)
-    transcript = json_data["results"]["transcripts"][0]["transcript"]
-    # Delete transcript object for next round.
+    # Remove files for all next rounds.
     authenticated_client.delete_object(Bucket='buketa', Key=file_key)
-    """
-
-    # PROCESS FOR AZURE TRANSCRIPTION
-    # Download audio file from s3.
-    authenticated_client.download_file("buketa", file_key, "client.webm")
-    # convert to wav.
-    os.system('ffmpeg -i "client.webm" -vn "client.wav"')
-    transcript = recognize_from_file("client.wav")
-    
-
-    authenticated_client.delete_object(Bucket='buketa', Key=file_key)
-
-    # Remove files generated in previous steps (Azure).
-    os.system('rm -rf client.wav')
     os.system('rm -rf client.webm')
 
     if len(transcript) == 0:
