@@ -57,8 +57,7 @@ db_cursor.execute( \
                                    ON UPDATE CASCADE ON DELETE RESTRICT,
                                FOREIGN KEY (STTServiceId)
                                    REFERENCES STTServices(STTServiceId)
-                                   ON UPDATE CASCADE ON DELETE RESTRICT,
-                               )
+                                   ON UPDATE CASCADE ON DELETE RESTRICT)
                                   
     """)
 
@@ -73,8 +72,7 @@ db_cursor.execute(
                                    ON UPDATE CASCADE ON DELETE RESTRICT,
                                FOREIGN KEY (TTSServiceId)
                                    REFERENCES TTSServices(TTSServiceId)
-                                   ON UPDATE CASCADE ON DELETE RESTRICT,
-                               )                             
+                                   ON UPDATE CASCADE ON DELETE RESTRICT)                             
     
     """)
 
