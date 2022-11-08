@@ -28,7 +28,7 @@ db_cursor.execute( \
 
 db_cursor.execute( \
     """
-    CREATE TABLE STTBenchmarks(STTBenchmarkId INT NOT NULL PRIMARY KEY AUTO_INCREMENT
+    CREATE TABLE STTBenchmarks(STTBenchmarkId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                                metricId INT NOT NULL,
                                STTServiceId INT NOT NULL,
                                benchmarkValue FLOAT NOT NULL,
@@ -44,7 +44,7 @@ db_cursor.execute( \
 
 db_cursor.execute(
     """
-    CREATE TABLE TTSBenchmarks(TTSBenchmarkId INT NOT NULL PRIMARY KEY AUTO_INCREMENT
+    CREATE TABLE TTSBenchmarks(TTSBenchmarkId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                                metricId INT NOT NULL,
                                TTSServiceId INT NOT NULL,
                                benchmarkValue FLOAT NOT NULL,
