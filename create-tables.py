@@ -1,4 +1,3 @@
-# import the mysql client for python
 import pymysql
 
 db_connection   = pymysql.connect( \
@@ -6,6 +5,15 @@ db_connection   = pymysql.connect( \
     user="admin", password="vpcOwnChunkCloud", db="Ultron")
 
 db_cursor = db_connection.cursor()
+
+# erase dependent tables first.
+db_cursor.execute( \
+    """DROP TABLE IF EXISTS STTBenchmarks
+    """)
+
+db_cursor.execute( \
+    """DROP TABLE IF EXISTS TTSBenchmarks
+    """)
 
 db_cursor.execute( \
     """DROP TABLE IF EXISTS Metrics""")
@@ -17,15 +25,6 @@ db_cursor.execute( \
 db_cursor.execute( \
     """DROP TABLE IF EXISTS TTSServices
     """)
-
-db_cursor.execute( \
-    """DROP TABLE IF EXISTS STTBenchmarks
-    """)
-
-db_cursor.execute( \
-    """DROP TABLE IF EXISTS TTSBenchmarks
-    """)
-
 
 db_cursor.execute( \
     """
@@ -76,7 +75,42 @@ db_cursor.execute(
     
     """)
 
+db_cursor.execute( \
+    """
+    INSERT INTO TABLE Metrics (name, unit) VALUES ("Latencia", "milisegundos")
+    """)
 
+db_cursor.execute( \
+    """
+    INSERT INTO TABLE Metrics (name, unit) VALUES ("Exactitud", "Porcentaje")
+    """)
 
+db_cursor.execute( \
+    """
+    INSERT INTO TABLE STTServices (name) VALUES ("Transcribe")
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO TABLE STTServices (name) VALUES ("Azure")
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO TABLE TTSServices (name) VALUES ("Polly")
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO TABLE STTServices (name) VALUES ("Google")
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO TABLE STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+    VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "Transcribe"), 
+            10000)
+    """)
 
 # intermediate table after parent tables so that references exist.
