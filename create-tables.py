@@ -115,7 +115,20 @@ db_cursor.execute( \
             10000)
     """)
 
-for row in db_cursor.fetchall():
-    print(row)
+db_cursor.execute( \
+    """
+    INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+    VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "Transcribe"), 
+            5000)
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+    VALUES ((SELECT metricId FROM Metrics WHERE name = "Exactitud"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "Transcribe"), 
+            10000)
+    """)
 
 # intermediate table after parent tables so that references exist.
