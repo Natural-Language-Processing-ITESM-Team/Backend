@@ -131,6 +131,15 @@ db_cursor.execute( \
             10000)
     """)
 
-# select s.name, avg(benchmarkValue) from Metrics as m, STTBenchmarks as b, STTServices as s where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" group by s.name;
+db_cursor.execute( \
+    """select s.name, avg(benchmarkValue) 
+    from Metrics as m, STTBenchmarks as b, STTServices as s 
+    where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
+    group by s.name""")
+
+rows = db_cursor.fetchall()
+for row in rows:
+    print(row)
+
 
 # intermediate table after parent tables so that references exist.
