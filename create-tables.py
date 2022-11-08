@@ -113,4 +113,7 @@ db_cursor.execute( \
             10000)
     """)
 
+for row in db_cursor.fetchall():
+    print(row)
+
 # intermediate table after parent tables so that references exist.
