@@ -77,37 +77,37 @@ db_cursor.execute(
 
 db_cursor.execute( \
     """
-    insert into Metrics (name, unit) values ("latencia", "ms");
+    INSERT INTO Metrics (name, unit) VALUES ("latencia", "ms");
     """)
 
 db_cursor.execute( \
     """
-    INSERT INTO TABLE Metrics (name, unit) VALUES ("Exactitud", "Porcentaje")
+    INSERT INTO Metrics (name, unit) VALUES ("Exactitud", "Porcentaje")
     """)
 
 db_cursor.execute( \
     """
-    INSERT INTO TABLE STTServices (name) VALUES ("Transcribe")
+    INSERT INTO STTServices (name) VALUES ("Transcribe")
     """)
 
 db_cursor.execute( \
     """
-    INSERT INTO TABLE STTServices (name) VALUES ("Azure")
+    INSERT INTO STTServices (name) VALUES ("Azure")
     """)
 
 db_cursor.execute( \
     """
-    INSERT INTO TABLE TTSServices (name) VALUES ("Polly")
+    INSERT INTO TTSServices (name) VALUES ("Polly")
     """)
 
 db_cursor.execute( \
     """
-    INSERT INTO TABLE STTServices (name) VALUES ("Google")
+    INSERT INTO STTServices (name) VALUES ("Google")
     """)
 
 db_cursor.execute( \
     """
-    INSERT INTO TABLE STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+    INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
             (SELECT STTServiceId FROM STTServices WHERE name = "Transcribe"), 
             10000)
