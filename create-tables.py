@@ -9,20 +9,20 @@ db_cursor = db_connection.cursor()
 
 db_cursor.execute( \
     """
-    CREATE TABLE Metrics(metricId INT NOT NULL PRIMARY KEY,
+    CREATE TABLE Metrics(metricId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                          name VARCHAR(50) NOT NULL,
                          unit VARCHAR(50) NOT NULL)""")    
                                
 db_cursor.execute( \
     """
-    CREATE TABLE TTSServices(TTSServiceId INT NOT NULL PRIMARY KEY,
+    CREATE TABLE TTSServices(TTSServiceId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                              name VARCHAR(50) NOT NULL)
     """
 )
 
 db_cursor.execute( \
     """
-    CREATE TABLE STTServices(STTServiceId INT NOT NULL PRIMARY KEY,
+    CREATE TABLE STTServices(STTServiceId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                              name VARCHAR(50) NOT NULL)
     """)
 
