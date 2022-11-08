@@ -38,7 +38,7 @@ db_cursor.execute( \
                                FOREIGN KEY (STTServiceId)
                                    REFERENCES STTServices(STTServiceId)
                                    ON UPDATE CASCADE ON DELETE RESTRICT,
-                               PRIMARY KEY (metricId, STTServiceId))
+                               )
                                   
     """)
 
