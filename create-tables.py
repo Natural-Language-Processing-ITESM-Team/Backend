@@ -152,14 +152,13 @@ db_cursor.execute( \
     from Metrics as m, STTBenchmarks as b, STTServices as s 
     where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
     group by s.name
-    order by avg_benchmark desc
+    order by avg_benchmark asc
     """)
 
 rows = db_cursor.fetchall()
 print(rows)
-for row in rows:
-    service = row[0]
-    benchmark_value = row[1]
 
-
+best_service = rows[0][0]
+best_benchmark = rows[0][1]
+print(f"best service {best_service} best benchmark {best_benchmark}")
 # intermediate table after parent tables so that references exist.
