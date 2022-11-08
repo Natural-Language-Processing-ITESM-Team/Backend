@@ -77,7 +77,7 @@ db_cursor.execute(
 
 db_cursor.execute( \
     """
-    INSERT INTO TABLE Metrics (name, unit) VALUES ("Latencia", "milisegundos")
+    insert into Metrics (name, unit) values ("latencia", "ms");
     """)
 
 db_cursor.execute( \
