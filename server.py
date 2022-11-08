@@ -74,12 +74,14 @@ def getTranscription():
     # The way to get my form fields
     #request.form[]
 
-    file_key_json = request.get_json()
+    incoming_json = request.get_json()
 
-    file_key = file_key_json["key"]
+    file_key = incoming_json["key"]
+    stt_measure = incoming_json["sttMeasure"]
+    print(f"stt measure is {stt_measure}")
 
     print(f"I server am going to ask for transcription for {file_key}")
-    
+    return
     # El famoso conmutador para stt
     db_cursor.execute( \
     """select s.name, avg(benchmarkValue) as avg_benchmark
