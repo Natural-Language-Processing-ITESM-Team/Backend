@@ -7,7 +7,31 @@ db_connection   = pymysql.connect( \
 
 db_cursor = db_connection.cursor()
 
-db_cursor.execute("DROP TABLE Metrics, STTServices, TTSServices, STTBenchmarks, TTSBenchmarks")
+db_cursor.execute( \
+    """IF OBJECT_ID('dbo.Metrics', 'U') IS NOT NULL 
+       DROP TABLE dbo.Metrics; 
+    """)
+
+db_cursor.execute( \
+    """IF OBJECT_ID('dbo.STTServices', 'U') IS NOT NULL 
+       DROP TABLE dbo.STTServices; 
+    """)
+
+db_cursor.execute( \
+    """IF OBJECT_ID('dbo.TTSServices', 'U') IS NOT NULL 
+       DROP TABLE dbo.TTSServices; 
+    """)
+
+db_cursor.execute( \
+    """IF OBJECT_ID('dbo.STTBenchmarks', 'U') IS NOT NULL 
+       DROP TABLE dbo.STTBenchmarks; 
+    """)
+
+db_cursor.execute( \
+    """IF OBJECT_ID('dbo.TTSBenchmarks', 'U') IS NOT NULL 
+       DROP TABLE dbo.TTSBenchmarks; 
+    """)
+
 
 db_cursor.execute( \
     """
