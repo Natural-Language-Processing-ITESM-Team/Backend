@@ -60,7 +60,7 @@ db_cursor.execute( \
                                   
     """)
 
-db_cursor.execute(
+db_cursor.execute( \
     """
     CREATE TABLE TTSBenchmarks(TTSBenchmarkId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                                metricId INT NOT NULL,
@@ -74,6 +74,8 @@ db_cursor.execute(
                                    ON UPDATE CASCADE ON DELETE RESTRICT)                             
     
     """)
+
+print("voy a insertar xd")
 
 db_cursor.execute( \
     """
