@@ -133,6 +133,7 @@ def getTranscription():
         text=transcript)"""
 
     # PROCESS FOR GOOGLE DIALOGFLOW
+    print("Using Google Text to speech")
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(DIALOGFLOW_PROJECT_ID, SESSION_ID)
     text_input = dialogflow.types.TextInput(text=transcript, language_code=DIALOGFLOW_LANGUAGE_CODE)
