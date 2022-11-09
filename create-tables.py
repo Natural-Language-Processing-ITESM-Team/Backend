@@ -172,7 +172,7 @@ db_cursor.execute( \
 db_cursor.execute( \
 """select s.name, avg(benchmarkValue) as avg_benchmark
     from Metrics as m, STTBenchmarks as b, STTServices as s 
-    where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
+    where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Costo" 
     group by s.name
     order by avg_benchmark asc
     """)
