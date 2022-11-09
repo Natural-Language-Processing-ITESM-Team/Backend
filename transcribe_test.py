@@ -8,7 +8,7 @@ def transcribe_file(job_name, file_uri, transcribe_client, output_key):
         TranscriptionJobName=job_name,
         Media={'MediaFileUri': file_uri},
         MediaFormat='webm',
-        LanguageCode='es-MX',
+        LanguageCode='es-ES',
         OutputBucketName="buketa",
         OutputKey=output_key
     )
