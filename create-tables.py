@@ -148,6 +148,28 @@ db_cursor.execute( \
     """)
 
 db_cursor.execute( \
+    """
+    INSERT INTO Metrics (name, unit) 
+    VALUES ("Costo", "USD")
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+    VALUES ((SELECT metricId FROM Metrics WHERE name = "Costo"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "Azure"), 
+            1.44)
+    """)
+
+db_cursor.execute( \
+    """
+    INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+    VALUES ((SELECT metricId FROM Metrics WHERE name = "Costo"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "Transcribe"), 
+            1.0)
+    """)
+
+db_cursor.execute( \
 """select s.name, avg(benchmarkValue) as avg_benchmark
     from Metrics as m, STTBenchmarks as b, STTServices as s 
     where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
