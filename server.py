@@ -37,7 +37,7 @@ session_token = os.getenv("AWS_SESSION_TOKEN")
 region = os.getenv("REGION_NAME")
 
 IBM_access_key = os.getenv('IAM_AUTHENTICATOR')
-IBM_assistant = os.getenv('ASSITANT_ID')
+IBM_assistant = os.getenv('ASSISTANT_ID')
 
 authenticated_client = boto3.client(
         "s3",
