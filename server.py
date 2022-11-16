@@ -178,17 +178,19 @@ def getTranscription():
 
     print(f"prompt {transcript}")
     print(f"response {text_for_client}")
-    polly_text = text_for_client
+
+
+    
     # AWS SPECIFIC
     """if( 'messages' in response):
         polly_text = response['messages'][0]['content']
     else:
         polly_text = 'I didnt understand'"""
 
-    print("message for polly", polly_text)
+    """print("message for polly", text_for_client)
 
-    link = get_polly_audio(polly_client, file_key[:-4] + "mp3", polly_text)
-    #return jsonify({"link": link, "text": polly_text})
+    link = get_polly_audio(polly_client, file_key[:-4] + "mp3", text_for_client)
+    #return jsonify({"link": link, "text": polly_text})"""
 
 
 
