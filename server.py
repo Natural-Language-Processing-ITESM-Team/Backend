@@ -204,12 +204,16 @@ def getTranscription():
         response = client.synthesize_speech(request={"input": input_text, "voice": voice, "audio_config": audio_config})
         with open("output.mp3", "wb") as out:
             out.write(response.audio_content)
-            authenticated_client.upload_file('output.mp3', 'buketa', file_key[:-4] + str(contador) + "mp3")
+            out_file_key = file_key[:-4] + str(contador) + "mp3"
+            authenticated_client.upload_file('output.mp3', 'buketa', out_file_key)
             contador += 1
-        return contador + 1
+        return contador + 1, out_file_key
             #print('Audio content written to file "output.mp3"')
 
-    contador = synthesize_text(input_text, contador)
+    contador, out_file_key = synthesize_text(input_text, contador)
+
+    return f"http://us-east-1.amazonaws.com/buketa/{out_file_key}"
+
 
     # store file in current folder.
     # authenticated_client.download_file("buketa", file_key[:-4] + "mp3", "audio_for_client.mp3")
