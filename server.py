@@ -17,6 +17,8 @@ import pymysql
 import json
 from ibm_watson import AssistantV2
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from google.cloud import texttospeech
+import google.cloud.texttospeech as tts
 
 db_connection = pymysql.connect( \
     host="benchmarksdb.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
@@ -186,7 +188,27 @@ def getTranscription():
     print("message for polly", polly_text)
 
     link = get_polly_audio(polly_client, file_key[:-4] + "mp3", polly_text)
-    return jsonify({"link": link, "text": polly_text})
+    #return jsonify({"link": link, "text": polly_text})
+
+
+
+    # TTS FOR GOOGLE
+    client = texttospeech.TextToSpeechClient()
+    input_text = texttospeech.SynthesisInput(text=text_for_client)
+    contador = 0
+    def synthesize_text(text):
+        voice = texttospeech.VoiceSelectionParams(language_code="es-US",name="es-ES-Standard-A ",ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,)
+        audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
+        response = client.synthesize_speech(request={"input": input_text, "voice": voice, "audio_config": audio_config})
+        with open("output.mp3", "wb") as out:
+            out.write(response.audio_content)
+            authenticated_client.upload_file('output.mp3', 'buketa', file_key[:-4] + str(contador) + "mp3")
+            contador += 1
+
+            #print('Audio content written to file "output.mp3"')
+
+    synthesize_text(input_text)
+
     # store file in current folder.
     # authenticated_client.download_file("buketa", file_key[:-4] + "mp3", "audio_for_client.mp3")
 
