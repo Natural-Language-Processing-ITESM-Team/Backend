@@ -10,9 +10,13 @@ import azure.cognitiveservices.speech as speechsdk
 
 load_dotenv("secrets.env")
 
+speech_key = os.environ.get('AZURE_SPEECH_KEY')
+azure_region = os.environ.get('AZURE_SPEECH_REGION')
 
 def recognize_from_file(file_name):
-    speech_config = speechsdk.SpeechConfig(subscription=os.environ.get('AZURE_SPEECH_KEY'), region=os.environ.get('AZURE_SPEECH_REGION'))
+    print(f"azure key {speech_key}")
+    print(f"azure region {azure_region}")
+    speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=azure_region)
     speech_config.speech_recognition_language="es-MX"
 
     audio_config = speechsdk.AudioConfig(filename=file_name)
