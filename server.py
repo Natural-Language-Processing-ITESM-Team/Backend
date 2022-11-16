@@ -105,7 +105,7 @@ def getTranscription():
     best_stt_service = rows[0][0]
     best_stt_benchmark = rows[0][1]
     # REMOVE THIS WHEN DONE TESTING
-    best_stt_service = "Transcribe"
+    #best_stt_service = "Transcribe" test
     if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.
@@ -204,7 +204,7 @@ def getTranscription():
         response = client.synthesize_speech(request={"input": input_text, "voice": voice, "audio_config": audio_config})
         with open("output.mp3", "wb") as out:
             out.write(response.audio_content)
-            out_file_key = file_key[:-4] + str(contador) + "mp3"
+            out_file_key = file_key[:-5] + str(contador) + ".mp3"
             authenticated_client.upload_file('output.mp3', 'buketa', out_file_key)
             contador += 1
         return contador + 1, out_file_key
