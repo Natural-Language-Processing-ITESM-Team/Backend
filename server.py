@@ -14,6 +14,9 @@ from google.api_core.exceptions import InvalidArgument
 from flask import jsonify
 import time
 import pymysql
+import json
+from ibm_watson import AssistantV2
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 db_connection = pymysql.connect( \
     host="benchmarksdb.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
@@ -32,6 +35,9 @@ acces_key = os.getenv("AWS_ACCESS_KEY_ID")
 secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 session_token = os.getenv("AWS_SESSION_TOKEN")
 region = os.getenv("REGION_NAME")
+
+IBM_access_key = os.getenv('IAM_AUTHENTICATOR')
+IBM_assistant = os.getenv('ASSITANT_ID')
 
 authenticated_client = boto3.client(
         "s3",
@@ -133,7 +139,7 @@ def getTranscription():
         text=transcript)"""
 
     # PROCESS FOR GOOGLE DIALOGFLOW
-    print("Using Google Text to speech")
+    """print("Using Google Text to speech")
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(DIALOGFLOW_PROJECT_ID, SESSION_ID)
     text_input = dialogflow.types.TextInput(text=transcript, language_code=DIALOGFLOW_LANGUAGE_CODE)
@@ -143,7 +149,28 @@ def getTranscription():
     except InvalidArgument:
         raise
 
-    text_for_client = response.query_result.fulfillment_text
+    text_for_client = response.query_result.fulfillment_text"""
+
+
+    # PROCESS FOR IBM WATSON
+    authenticator = IAMAuthenticator(IBM_access_key)
+    assistant = AssistantV2(
+        version='2021-06-14',
+        authenticator = authenticator
+    )
+
+    assistant.set_service_url('https://api.us-south.assistant.watson.cloud.ibm.com/instances/e0d095a7-17e0-4a51-b9e9-03b6552dd042')
+
+    response = assistant.message_stateless(
+        assistant_id=IBM_assistant,
+        input={
+            'message_type': 'text',
+            'text': transcript
+        }
+    ).get_result()
+
+    text_for_client = response['output']['generic'][0]['text']
+
 
     print(f"prompt {transcript}")
     print(f"response {text_for_client}")

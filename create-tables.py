@@ -153,6 +153,8 @@ db_cursor.execute( \
     VALUES ("Costo", "USD")
     """)
 
+# INSERT COSTS FOR ALL STT AND TTS SERVICES.
+
 db_cursor.execute( \
     """
     INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
@@ -160,6 +162,7 @@ db_cursor.execute( \
             (SELECT STTServiceId FROM STTServices WHERE name = "Azure"), 
             1.44)
     """)
+
 
 db_cursor.execute( \
     """
