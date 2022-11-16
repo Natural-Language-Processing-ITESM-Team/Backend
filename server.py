@@ -198,7 +198,7 @@ def getTranscription():
     client = texttospeech.TextToSpeechClient()
     input_text = texttospeech.SynthesisInput(text=text_for_client)
     contador = 0
-    def synthesize_text(text):
+    def synthesize_text(text, contador):
         voice = texttospeech.VoiceSelectionParams(language_code="es-US",name="es-ES-Standard-A ",ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,)
         audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
         response = client.synthesize_speech(request={"input": input_text, "voice": voice, "audio_config": audio_config})
@@ -206,10 +206,10 @@ def getTranscription():
             out.write(response.audio_content)
             authenticated_client.upload_file('output.mp3', 'buketa', file_key[:-4] + str(contador) + "mp3")
             contador += 1
-
+        return contador + 1
             #print('Audio content written to file "output.mp3"')
 
-    synthesize_text(input_text)
+    contador = synthesize_text(input_text, contador)
 
     # store file in current folder.
     # authenticated_client.download_file("buketa", file_key[:-4] + "mp3", "audio_for_client.mp3")
