@@ -33,6 +33,7 @@ DIALOGFLOW_PROJECT_ID = 'pr-ctica-1-gcji'
 DIALOGFLOW_LANGUAGE_CODE = 'es'
 SESSION_ID = 'me'
 
+
 acces_key = os.getenv("AWS_ACCESS_KEY_ID")
 secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 session_token = os.getenv("AWS_SESSION_TOKEN")
@@ -40,6 +41,8 @@ region = os.getenv("REGION_NAME")
 
 IBM_access_key = os.getenv('IAM_AUTHENTICATOR')
 IBM_assistant = os.getenv('ASSISTANT_ID')
+
+TOKEN = os.getenv('TOKEN')
 
 authenticated_client = boto3.client(
         "s3",
@@ -74,6 +77,25 @@ CORS(app)
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
+
+@app.route("/webhook",methods=['POST'])
+def webhook():
+    content = request.get_json()
+    print(content)
+    return 'success',200
+
+@app.route("/webhook",methods=['GET'])
+def webhookVerification():
+    mode = request.args.get('hub.mode')
+    token = request.args.get('hub.token')
+    if(not token):
+        token = request.args.get('hub.verify_token')
+        challenge = request.args.get('hub.challenge')
+    if(mode and token):
+        if(mode == 'subscribe' and token == TOKEN):
+            print('Webhook verified')
+            return 'success', 200
+    return 'error', 403
 
 @app.route('/getTranscription', methods=['POST'])
 def getTranscription():
@@ -220,8 +242,6 @@ def getTranscription():
 
     #with open('audio_for_client.mp3', 'r') as f:
     #    return f
-
-    
 
     
 
