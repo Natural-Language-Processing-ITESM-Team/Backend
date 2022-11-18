@@ -19,6 +19,7 @@ from ibm_watson import AssistantV2
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from google.cloud import texttospeech
 import google.cloud.texttospeech as tts
+import meta_api
 
 db_connection = pymysql.connect( \
     host="benchmarksdb.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
@@ -77,6 +78,20 @@ CORS(app)
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
+
+@app.route("/sendWhatsappTest", methods=['GET'])
+def sendWhatsappTest():
+    target_number = request.args.get('target_number')
+    message = request.args.get('message')
+    meta_api.respondWhatsapp(target_number,message)
+    return 'success', 200
+
+@app.route("/sendMessengerTest", methods=['GET'])
+def sendMessengerTest():
+    target_PSID = request.args.get('PSID')
+    message = request.args.get('message')
+    meta_api.respondMessenger(target_PSID, message)
+    return 'success', 200
 
 @app.route("/webhook",methods=['POST'])
 def webhook():
