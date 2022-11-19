@@ -22,8 +22,8 @@ import google.cloud.texttospeech as tts
 import meta_api
 
 db_connection = pymysql.connect( \
-    host="benchmarksdb.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
-    user="admin", password="vpcOwnChunkCloud", db="Ultron", port=3306, autocommit=True)
+    host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
+    user="admin", password="vpcOwnChunkCloud", port=3306, autocommit=True)
 
 db_cursor = db_connection.cursor()
 

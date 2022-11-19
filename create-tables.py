@@ -6,6 +6,14 @@ db_connection   = pymysql.connect( \
 
 db_cursor = db_connection.cursor()
 
+db_cursor.execute( \
+    """ CREATE DATABASE benchmarksDB
+    """)
+
+db_cursor.execute( \
+    """ USE benchmarksDB
+    """)
+
 # erase dependent tables first.
 db_cursor.execute( \
     """DROP TABLE IF EXISTS STTBenchmarks
