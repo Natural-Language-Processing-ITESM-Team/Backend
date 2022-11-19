@@ -23,7 +23,7 @@ import meta_api
 
 db_connection   = pymysql.connect( \
     host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
-    user="admin", password="vpcOwnChunkCloud", db="benchamrksDB", port=3306, autocommit=True)
+    user="admin", password="vpcOwnChunkCloud", db="benchmarksDB", port=3306, autocommit=True)
 
 db_cursor = db_connection.cursor()
 
