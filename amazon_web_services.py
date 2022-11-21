@@ -20,17 +20,17 @@ class AmazonWebServices:
         load_dotenv("secrets.env")
 
         # Read credentials.
-        self.access_key = os.getenv("AWS_ACCESS_KEY_ID")
-        self.secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
-        self.session_token = os.getenv("AWS_SESSION_TOKEN")
-        self.region = os.getenv("REGION_NAME")
+        self.__access_key = os.getenv("AWS_ACCESS_KEY_ID")
+        self.__secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+        self.__session_token = os.getenv("AWS_SESSION_TOKEN")
+        self.__region = os.getenv("REGION_NAME")
 
         self.s3_client = boto3.client(
             "s3",
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_access_key,
-            aws_session_token=session_token,
-            region_name=region
+            aws_access_key_id=self.__access_key,
+            aws_secret_access_key=self.__secret_access_key,
+            aws_session_token=self.__session_token,
+            region_name=self.__region
         )
 
         self.transcribe_client = boto3.client('transcribe',
