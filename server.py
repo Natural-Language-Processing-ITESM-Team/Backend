@@ -122,7 +122,8 @@ def getTranscription():
     incoming_json = request.get_json()
 
     file_key = incoming_json["key"]
-    stt_measure = incoming_json["sttMeasure"]
+    #stt_measure = incoming_json["sttMeasure"]
+    stt_measure = "latency"
     print(f"stt measure is {stt_measure}")
 
     print(f"I server am going to ask for transcription for {file_key}")
@@ -142,7 +143,7 @@ def getTranscription():
     best_stt_service = rows[0][0]
     best_stt_benchmark = rows[0][1]
     # REMOVE THIS WHEN DONE TESTING
-    #best_stt_service = "Transcribe" test
+    best_stt_service = "Transcribe"
     if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.
