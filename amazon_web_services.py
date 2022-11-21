@@ -94,7 +94,7 @@ class AmazonWebServices:
         bot_response = self.lex_client.recognize_text(
                 botId='P5LSOCLGUI',
                 botAliasId='TSTALIASID',
-                localeId='es-419',
+                localeId='es-ES',
                 sessionId="test_session2",
                 text=client_string)
 
