@@ -92,13 +92,15 @@ class AmazonWebServices:
 
     def converse_back(self, client_string):
         bot_response = self.lex_client.recognize_text(
-                botId='DRV6AJBZSN',
+                botId='P5LSOCLGUI',
                 botAliasId='TSTALIASID',
                 localeId='es-419',
                 sessionId="test_session2",
                 text=client_string)
 
-        if( 'messages' in bot_response):
+        if('messages' in bot_response):
+            print("messages ")
+            print(bot_response['messages'])
             text_for_client = bot_response['messages'][0]['content']
         else:
             text_for_client = 'I didn\'t understand'
