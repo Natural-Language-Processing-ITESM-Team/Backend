@@ -92,9 +92,9 @@ class AmazonWebServices:
 
     def converse_back(self, client_string):
         bot_response = self.lex_client.recognize_text(
-                botId='40JABLDQYI',
+                botId='DRV6AJBZSN',
                 botAliasId='TSTALIASID',
-                localeId='en_US',
+                localeId='es_MX',
                 sessionId="test_session2",
                 text=client_string)
 
