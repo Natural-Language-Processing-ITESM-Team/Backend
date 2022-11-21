@@ -249,6 +249,7 @@ def getTranscription():
             #print('Audio content written to file "output.mp3"')
 
     contador, out_file_key = synthesize_text(input_text, contador)
+    return f"https://buketa.s3.amazonaws.com/{out_file_key}"
 
     return f"http://us-east-1.amazonaws.com/buketa/{out_file_key}"
 
