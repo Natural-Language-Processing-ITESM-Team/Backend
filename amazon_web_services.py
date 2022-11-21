@@ -98,12 +98,15 @@ class AmazonWebServices:
                 sessionId="test_session2",
                 text=client_string)
 
+        print("bot response")
+        print(bot_response)
+
         if('messages' in bot_response):
             print("messages ")
             print(bot_response['messages'])
             text_for_client = bot_response['messages'][0]['content']
         else:
-            text_for_client = 'I didn\'t understand'
+            text_for_client = 'No he entendido'
 
         return text_for_client
 
