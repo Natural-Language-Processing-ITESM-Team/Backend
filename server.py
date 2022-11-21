@@ -127,7 +127,7 @@ def getTranscription():
 
     if best_stt_service == "Transcribe":
         # PROCESS FOR AWS TRANSCRIPTION
-        transcript = AWS.transcribe_file('Example-job', file_key, file_key[:-4] + "json")
+        transcript = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
         
     
     # Remove files for all next rounds.
@@ -180,7 +180,7 @@ def getTranscription():
 
 
     # AWS TTS
-    audio_response_link = AWS.get_polly_audio(text_for_client, file_key[:-4] + "mp3")
+    audio_response_link = AWS.vocalize(text_for_client, file_key[:-4] + "mp3")
 
     # TTS FOR GOOGLE
     """client = texttospeech.TextToSpeechClient()
