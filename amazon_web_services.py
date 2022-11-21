@@ -30,27 +30,26 @@ class AmazonWebServices:
             aws_access_key_id=self.__access_key,
             aws_secret_access_key=self.__secret_access_key,
             aws_session_token=self.__session_token,
-            region_name=self.__region
-        )
+            region_name=self.__region)
 
         self.transcribe_client = boto3.client('transcribe',
-                                         aws_access_key_id=access_key,
-                                         aws_secret_access_key=secret_access_key,
-                                         aws_session_token=session_token,
-                                         region_name=region)
+                                              aws_access_key_id=self.__access_key,
+                                              aws_secret_access_key=self.__secret_access_key,
+                                              aws_session_token=self.__session_token,
+                                              region_name=self.__region)
 
         # LexV2 client uses 'lexv2-runtime'
         self.lex_client = boto3.client('lexv2-runtime',
-                                  aws_access_key_id=access_key,
-                                  aws_secret_access_key=secret_access_key,
-                                  aws_session_token=session_token,
-                                  region_name=region)
+                                       aws_access_key_id=self.__access_key,
+                                       aws_secret_access_key=self.__secret_access_key,
+                                       aws_session_token=self.__session_token,
+                                       region_name=self.__region)
 
         self.polly_client = boto3.client('polly',
-                                    aws_access_key_id=access_key,
-                                    aws_secret_access_key=secret_access_key,
-                                    aws_session_token=session_token,
-                                    region_name=region)
+                                         aws_access_key_id=self.__access_key,
+                                         aws_secret_access_key=self.__secret_access_key,
+                                         aws_session_token=self.__session_token,
+                                         region_name=self.__region)
 
 
     def transcribe_audio_file(self, job_name, file_key, output_key):
