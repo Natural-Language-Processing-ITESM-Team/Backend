@@ -15,11 +15,7 @@ session_token = os.getenv("AWS_SESSION_TOKEN")
 region = os.getenv("REGION_NAME")
 
 
-polly_client = boto3.client('polly',
-        aws_access_key_id=acces_key,
-        aws_secret_access_key=secret_access_key,
-        aws_session_token=session_token,
-        region_name=region)
+
 
 """with open('polly_res.txt', encoding='utf-8') as f:
   response = f.read()

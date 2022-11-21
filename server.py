@@ -21,6 +21,9 @@ from google.cloud import texttospeech
 import google.cloud.texttospeech as tts
 import meta_api
 
+# Local related imports
+from amazon_web_services import AmazonWebServices
+
 db_connection   = pymysql.connect( \
     host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
     user="admin", password="vpcOwnChunkCloud", db="benchmarksDB", port=3306, autocommit=True)
@@ -35,42 +38,10 @@ DIALOGFLOW_LANGUAGE_CODE = 'es'
 SESSION_ID = 'me'
 
 
-acces_key = os.getenv("AWS_ACCESS_KEY_ID")
-secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
-session_token = os.getenv("AWS_SESSION_TOKEN")
-region = os.getenv("REGION_NAME")
-
 IBM_access_key = os.getenv('IAM_AUTHENTICATOR')
 IBM_assistant = os.getenv('ASSISTANT_ID')
 
 TOKEN = os.getenv('TOKEN')
-
-authenticated_client = boto3.client(
-        "s3",
-        aws_access_key_id=acces_key,
-        aws_secret_access_key=secret_access_key,
-        aws_session_token=session_token,
-        region_name=region
-)
-
-transcribe_client = boto3.client('transcribe',
-        aws_access_key_id=acces_key,
-        aws_secret_access_key=secret_access_key,
-        aws_session_token=session_token,
-        region_name=region)
-
-# LexV2 client uses 'lexv2-runtime'
-lex_client = boto3.client('lexv2-runtime',
-        aws_access_key_id=acces_key,
-        aws_secret_access_key=secret_access_key,
-        aws_session_token=session_token,
-        region_name=region)
-
-polly_client = boto3.client('polly',
-        aws_access_key_id=acces_key,
-        aws_secret_access_key=secret_access_key,
-        aws_session_token=session_token,
-        region_name=region)
 
 app = Flask(__name__)
 CORS(app)
@@ -114,7 +85,8 @@ def webhookVerification():
 
 @app.route('/getTranscription', methods=['POST'])
 def getTranscription():
-    global authenticated_client
+    AWS = AmazonWebServices()
+
     print("route getTranscription")
     # The way to get my form fields
     #request.form[]
@@ -144,41 +116,30 @@ def getTranscription():
     best_stt_benchmark = rows[0][1]
     # REMOVE THIS WHEN DONE TESTING
     best_stt_service = "Transcribe"
-    if best_stt_service == "Azure":
+    """if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.
-        authenticated_client.download_file("buketa", file_key, "client.webm")
+        s3_client.download_file("buketa", file_key, "client.webm")
         # convert to wav.
         os.system('ffmpeg -i "client.webm" -vn "client.wav"')
         transcript = recognize_from_file("client.wav")
-        os.system('rm -rf client.wav')
+        os.system('rm -rf client.wav')"""
 
-    elif best_stt_service == "Transcribe":
+    if best_stt_service == "Transcribe":
         # PROCESS FOR AWS TRANSCRIPTION
-        file_uri = "s3://buketa/" + file_key
-        print("I will place transcript in " + file_key[:-4] + "json")
-        transcribe_file('Example-job', file_uri, transcribe_client, file_key[:-4] + "json")
-        # store file in current folder.
-        authenticated_client.download_file("buketa", file_key[:-4] + "json", "helloback.json")
-        with open('helloback.json', 'r') as f:
-            json_data = json.load(f)
-        transcript = json_data["results"]["transcripts"][0]["transcript"]
+        transcript = AWS.transcribe_file('Example-job', file_key, file_key[:-4] + "json")
         
     
     # Remove files for all next rounds.
-    authenticated_client.delete_object(Bucket='buketa', Key=file_key)
+    AWS.delete_object(file_key)
+
     os.system('rm -rf client.webm')
 
     if len(transcript) == 0:
         transcript = "transcript empty"
     
     # PROCESS FOR AMAZON LEX
-    """response = lex_client.recognize_text(
-        botId='40JABLDQYI',
-        botAliasId='TSTALIASID',
-        localeId='en_US',
-        sessionId="test_session2",
-        text=transcript)"""
+    text_for_client = AWS.converse_back(transcript)
 
     # PROCESS FOR GOOGLE DIALOGFLOW
     """print("Using Google Text to speech")
@@ -195,7 +156,7 @@ def getTranscription():
 
 
     # PROCESS FOR IBM WATSON
-    authenticator = IAMAuthenticator(IBM_access_key)
+    """authenticator = IAMAuthenticator(IBM_access_key)
     assistant = AssistantV2(
         version='2021-06-14',
         authenticator = authenticator
@@ -211,29 +172,18 @@ def getTranscription():
         }
     ).get_result()
 
-    text_for_client = response['output']['generic'][0]['text']
+    text_for_client = response['output']['generic'][0]['text']"""
 
 
     print(f"prompt {transcript}")
     print(f"response {text_for_client}")
 
 
-    
-    # AWS SPECIFIC
-    """if( 'messages' in response):
-        polly_text = response['messages'][0]['content']
-    else:
-        polly_text = 'I didnt understand'"""
-
-    """print("message for polly", text_for_client)
-
-    link = get_polly_audio(polly_client, file_key[:-4] + "mp3", text_for_client)
-    #return jsonify({"link": link, "text": polly_text})"""
-
-
+    # AWS TTS
+    audio_response_link = AWS.get_polly_audio(text_for_client, file_key[:-4] + "mp3")
 
     # TTS FOR GOOGLE
-    client = texttospeech.TextToSpeechClient()
+    """client = texttospeech.TextToSpeechClient()
     input_text = texttospeech.SynthesisInput(text=text_for_client)
     contador = 0
     def synthesize_text(text, contador):
@@ -248,10 +198,13 @@ def getTranscription():
         return contador + 1, out_file_key
             #print('Audio content written to file "output.mp3"')
 
-    contador, out_file_key = synthesize_text(input_text, contador)
+    contador, out_file_key = synthesize_text(input_text, contador)"""
+
+    return audio_response_link
+
     return f"https://buketa.s3.amazonaws.com/{out_file_key}"
 
-    return f"http://us-east-1.amazonaws.com/buketa/{out_file_key}"
+
 
 
     # store file in current folder.
