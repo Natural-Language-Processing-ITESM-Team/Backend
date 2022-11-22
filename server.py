@@ -132,13 +132,14 @@ def getTranscription():
         transcript = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
     elif best_stt_service == "Google":
         transcript = GCP.transcribe_audio_file(file_key, AWS)
-    
+
+    print(f"prompt {transcript}")
     # Remove files for all next rounds.
     #AWS.delete_object(file_key) amazon needs it kind of
 
     #os.system('rm -rf client.webm') probably azure needs it
 
-    if len(transcript) == 0:
+    if len(transcript) == 0 or transcript is None:
         transcript = "transcript empty"
     
     # PROCESS FOR AMAZON LEX
@@ -168,7 +169,7 @@ def getTranscription():
     text_for_client = response['output']['generic'][0]['text']"""
 
 
-    print(f"prompt {transcript}")
+
     print(f"response {text_for_client}")
 
 
