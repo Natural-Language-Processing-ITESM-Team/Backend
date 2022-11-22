@@ -190,7 +190,7 @@ db_cursor.execute( \
     """
     INSERT INTO TTSBenchmarks (metricId, TTSServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "GoogleTTS"), 
+            (SELECT TTSServiceId FROM TTSServices WHERE name = "GoogleTTS"), 
             1000)
     """)
 
@@ -198,7 +198,7 @@ db_cursor.execute( \
     """
     INSERT INTO TTSBenchmarks (metricId, TTSServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "GoogleTTS"), 
+            (SELECT TTSServiceId FROM TTSServices WHERE name = "GoogleTTS"), 
             2000)
     """)
 
@@ -206,7 +206,7 @@ db_cursor.execute( \
     """
     INSERT INTO TTSBenchmarks (metricId, TTSServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "Polly"), 
+            (SELECT TTSServiceId FROM TTSServices WHERE name = "Polly"), 
             10000.0)
     """)
 
@@ -214,7 +214,7 @@ db_cursor.execute( \
     """
     INSERT INTO TTSBenchmarks (metricId, TTSServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "Polly"), 
+            (SELECT TTSServiceId FROM TTSServices WHERE name = "Polly"), 
             15000.0)
     """)
 
@@ -222,7 +222,7 @@ db_cursor.execute( \
     """
     INSERT INTO TTSBenchmarks (metricId, TTSServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Costo"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "Polly"), 
+            (SELECT TTSServiceId FROM TTSServices WHERE name = "Polly"), 
             10.0)
     """)
 
@@ -230,7 +230,7 @@ db_cursor.execute( \
     """
     INSERT INTO TTSBenchmarks (metricId, TTSServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Costo"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "GoogleTTS"), 
+            (SELECT TTSServiceId FROM TTSServices WHERE name = "GoogleTTS"), 
             5.0)
     """)
 
