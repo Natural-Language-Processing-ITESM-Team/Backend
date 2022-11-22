@@ -35,7 +35,7 @@ class GoogleCloudPlatform:
         audio = speech.RecognitionAudio(content=content)
         config = speech.RecognitionConfig(
             encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,
-            sample_rate_hertz=16000,
+            sample_rate_hertz=48000,
             language_code="es-MX",
         )
 
