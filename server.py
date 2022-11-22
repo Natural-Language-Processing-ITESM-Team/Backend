@@ -155,7 +155,10 @@ def getTranscription():
                 order by avg_benchmark asc
                 """)
 
-
+    rows = db_cursor.fetchall()
+    best_tts_service = rows[0][0]
+    best_tts_benchmark = rows[0][1]
+    print(f"best stt service for {tts_measure} is {best_tts_service}")
 
     return
     # REMOVE THIS WHEN DONE TESTING
