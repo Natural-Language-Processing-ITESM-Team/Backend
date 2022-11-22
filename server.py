@@ -23,6 +23,7 @@ import meta_api
 
 # Local related imports
 from amazon_web_services import AmazonWebServices
+from google_cloud_platform import GoogleCloudPlatform
 
 db_connection   = pymysql.connect( \
     host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
@@ -86,6 +87,7 @@ def webhookVerification():
 @app.route('/getTranscription', methods=['POST'])
 def getTranscription():
     AWS = AmazonWebServices()
+    GCP = GoogleCloudPlatform()
 
     print("route getTranscription")
     # The way to get my form fields
@@ -115,7 +117,7 @@ def getTranscription():
     best_stt_service = rows[0][0]
     best_stt_benchmark = rows[0][1]
     # REMOVE THIS WHEN DONE TESTING
-    best_stt_service = "Transcribe"
+    best_stt_service = "Google"
     """if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.
@@ -128,31 +130,22 @@ def getTranscription():
     if best_stt_service == "Transcribe":
         # PROCESS FOR AWS TRANSCRIPTION
         transcript = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
-        
+    elif best_stt_service == "Google":
+        transcript = GCP.transcribe_audio_file((file_key))
     
     # Remove files for all next rounds.
-    AWS.delete_object(file_key)
+    #AWS.delete_object(file_key) amazon needs it kind of
 
-    os.system('rm -rf client.webm')
+    #os.system('rm -rf client.webm') probably azure needs it
 
     if len(transcript) == 0:
         transcript = "transcript empty"
     
     # PROCESS FOR AMAZON LEX
-    text_for_client = AWS.converse_back(transcript)
+    #text_for_client = AWS.converse_back(transcript)
 
     # PROCESS FOR GOOGLE DIALOGFLOW
-    """print("Using Google Text to speech")
-    session_client = dialogflow.SessionsClient()
-    session = session_client.session_path(DIALOGFLOW_PROJECT_ID, SESSION_ID)
-    text_input = dialogflow.types.TextInput(text=transcript, language_code=DIALOGFLOW_LANGUAGE_CODE)
-    query_input = dialogflow.types.QueryInput(text=text_input)
-    try:
-        response = session_client.detect_intent(session=session, query_input=query_input)
-    except InvalidArgument:
-        raise
-
-    text_for_client = response.query_result.fulfillment_text"""
+    text_for_client = GCP.converse_back(transcript)
 
 
     # PROCESS FOR IBM WATSON
@@ -180,31 +173,12 @@ def getTranscription():
 
 
     # AWS TTS
-    audio_response_link = AWS.vocalize(text_for_client, file_key[:-4] + "mp3")
+    #audio_response_link = AWS.vocalize(text_for_client, file_key[:-4] + "mp3")
 
     # TTS FOR GOOGLE
-    """client = texttospeech.TextToSpeechClient()
-    input_text = texttospeech.SynthesisInput(text=text_for_client)
-    contador = 0
-    def synthesize_text(text, contador):
-        voice = texttospeech.VoiceSelectionParams(language_code="es-US",name="es-ES-Standard-A ",ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,)
-        audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
-        response = client.synthesize_speech(request={"input": input_text, "voice": voice, "audio_config": audio_config})
-        with open("output.mp3", "wb") as out:
-            out.write(response.audio_content)
-            out_file_key = file_key[:-5] + str(contador) + ".mp3"
-            authenticated_client.upload_file('output.mp3', 'buketa', out_file_key)
-            contador += 1
-        return contador + 1, out_file_key
-            #print('Audio content written to file "output.mp3"')
-
-    contador, out_file_key = synthesize_text(input_text, contador)"""
+    audio_response_link = GCP.vocalize(text_for_client, AWS)
 
     return audio_response_link
-
-    return f"https://buketa.s3.amazonaws.com/{out_file_key}"
-
-
 
 
     # store file in current folder.
