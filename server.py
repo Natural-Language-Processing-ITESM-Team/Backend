@@ -101,22 +101,41 @@ def getTranscription():
     print(f"stt measure is {stt_measure}")
 
     print(f"I server am going to ask for transcription for {file_key}")
-    
-    global db_cursor
 
     # El famoso conmutador para stt
-    db_cursor.execute( \
-    """select s.name, avg(benchmarkValue) as avg_benchmark
-        from Metrics as m, STTBenchmarks as b, STTServices as s 
-        where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
-        group by s.name
-        order by avg_benchmark asc
-        """)
+    global db_cursor
+    if stt_measure == "Latencia":
+
+        db_cursor.execute( \
+            """select s.name, avg(benchmarkValue) as avg_benchmark
+                from Metrics as m, STTBenchmarks as b, STTServices as s 
+                where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Latencia" 
+                group by s.name
+                order by avg_benchmark asc
+                """)
+    elif stt_measure == "Exactitud":
+        db_cursor.execute( \
+            """select s.name, avg(benchmarkValue) as avg_benchmark
+                from Metrics as m, STTBenchmarks as b, STTServices as s 
+                where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Exactitud" 
+                group by s.name
+                order by avg_benchmark desc
+                """)
+    elif stt_measure == "Costo":
+        db_cursor.execute( \
+            """select s.name, avg(benchmarkValue) as avg_benchmark
+                from Metrics as m, STTBenchmarks as b, STTServices as s 
+                where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Costo" 
+                group by s.name
+                order by avg_benchmark asc
+                """)
 
     rows = db_cursor.fetchall()
     best_stt_service = rows[0][0]
     best_stt_benchmark = rows[0][1]
     print(f"best stt service for {stt_measure} is {best_stt_service}")
+
+    return
     # REMOVE THIS WHEN DONE TESTING
     #best_stt_service = "Google"
     """if best_stt_service == "Azure":
