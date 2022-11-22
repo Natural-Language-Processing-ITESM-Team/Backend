@@ -131,7 +131,7 @@ def getTranscription():
         # PROCESS FOR AWS TRANSCRIPTION
         transcript = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
     elif best_stt_service == "Google":
-        transcript = GCP.transcribe_audio_file((file_key))
+        transcript = GCP.transcribe_audio_file(file_key, AWS)
     
     # Remove files for all next rounds.
     #AWS.delete_object(file_key) amazon needs it kind of
