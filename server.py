@@ -141,16 +141,16 @@ def getTranscription():
     if tts_measure == "Latencia":
         db_cursor.execute( \
             """select s.name, avg(benchmarkValue) as avg_benchmark
-                from Metrics as m, STTBenchmarks as b, STTServices as s 
-                where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Costo" 
+                from Metrics as m, TTSBenchmarks as b, TTSServices as s 
+                where m.metricId = b.metricId and s.TTSServiceId = b.TTSServiceId and m.name = "Latencia" 
                 group by s.name
                 order by avg_benchmark asc
                 """)
     elif tts_measure == "Costo":
         db_cursor.execute( \
             """select s.name, avg(benchmarkValue) as avg_benchmark
-                from Metrics as m, STTBenchmarks as b, STTServices as s 
-                where m.metricId = b.metricId and s.STTServiceId = b.STTServiceId and m.name = "Costo" 
+                from Metrics as m, TTSBenchmarks as b, TTSServices as s 
+                where m.metricId = b.metricId and s.TTSServiceId = b.TTSServiceId and m.name = "Costo" 
                 group by s.name
                 order by avg_benchmark asc
                 """)
