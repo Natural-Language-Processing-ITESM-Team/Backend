@@ -139,14 +139,14 @@ def getTranscription():
 
     #os.system('rm -rf client.webm') probably azure needs it
 
-    if len(transcript) == 0 or transcript is None:
+    if not transcript: # None or empty sequence
         transcript = "transcript empty"
     
     # PROCESS FOR AMAZON LEX
-    #text_for_client = AWS.converse_back(transcript)
+    text_for_client = AWS.converse_back(transcript)
 
     # PROCESS FOR GOOGLE DIALOGFLOW
-    text_for_client = GCP.converse_back(transcript)
+    #text_for_client = GCP.converse_back(transcript)
 
 
     # PROCESS FOR IBM WATSON
