@@ -6,6 +6,7 @@ Last update: november 21st, 2022
 # Standard library
 import os
 import random
+import io
 # 3rd party related libraries
 import dialogflow
 from google.api_core.exceptions import InvalidArgument
@@ -19,11 +20,26 @@ class GoogleCloudPlatform:
         self.DIALOGFLOW_LANGUAGE_CODE = 'es'
         self.SESSION_ID = 'me'
 
-    def transcribe_audio_file(self, file_key):
-        config = dict(language_code="es-MX")
+    def transcribe_audio_file(self, file_key, AWS):
         file_uri = "s3://buketa/" + file_key
         client = speech.SpeechClient()
-        response = client.recognize(config=config, audio=dict(uri=file_uri))
+
+        # Download audio file from s3.
+        AWS.s3_client.download_file("buketa", file_key, "client.webm")
+        # convert to wav.
+        #os.system('ffmpeg -i "client.webm" -vn "client.wav"')
+
+        with io.open("client.webm", "rb") as audio_file:
+            content = audio_file.read()
+
+        audio = speech.RecognitionAudio(content=content)
+        config = speech.RecognitionConfig(
+            encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+            #sample_rate_hertz=16000,
+            language_code="es-MX",
+        )
+
+        response = client.recognize(config=config, audio=audio)
 
         for result in response.results:
             best_alternative = result.alternatives[0]
