@@ -102,7 +102,7 @@ db_cursor.execute( \
 
 db_cursor.execute( \
     """
-    INSERT INTO STTServices (name) VALUES ("Google")
+    INSERT INTO STTServices (name) VALUES ("GoogleSTT")
     """)
 
 db_cursor.execute( \
@@ -112,7 +112,7 @@ db_cursor.execute( \
 
 db_cursor.execute( \
     """
-    INSERT INTO STTServices (name) VALUES ("Google")
+    INSERT INTO STTServices (name) VALUES ("GoogleTTS")
     """)
 
 db_cursor.execute( \
@@ -143,7 +143,7 @@ db_cursor.execute( \
     """
     INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "Google"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "GoogleSTT"), 
             1000)
     """)
 
@@ -151,7 +151,7 @@ db_cursor.execute( \
     """
     INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "Google"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "GoogleSTT"), 
             1500)
     """)
 
@@ -167,7 +167,7 @@ db_cursor.execute( \
     """
     INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Costo"), 
-            (SELECT STTServiceId FROM STTServices WHERE name = "Google"), 
+            (SELECT STTServiceId FROM STTServices WHERE name = "GoogleSTT"), 
             1.44)
     """)
 
