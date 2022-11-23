@@ -60,7 +60,7 @@ class GoogleCloudPlatform:
             response = session_client.detect_intent(session=session, query_input=query_input)
         except InvalidArgument:
             raise
-        print(response)
+        print(response.query_result.fulfillment_messages)
         text_for_client = response.query_result.fulfillment_text
         return text_for_client
 
