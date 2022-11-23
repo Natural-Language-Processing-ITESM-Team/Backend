@@ -278,7 +278,7 @@ def getTranscription():
                     {tts_latency})
             """)
 
-    return audio_response_link
+    return {"audio_response_link": audio_response_link, "text_for_client": text_for_client}
 
 
     # store file in current folder.
