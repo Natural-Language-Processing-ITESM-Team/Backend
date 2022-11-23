@@ -21,6 +21,8 @@ from google.cloud import texttospeech
 import google.cloud.texttospeech as tts
 import meta_api
 import time
+from bertopic import BERTopic
+
 
 # Local related imports
 from amazon_web_services import AmazonWebServices
@@ -47,6 +49,22 @@ TOKEN = os.getenv('TOKEN')
 
 app = Flask(__name__)
 CORS(app)
+
+AWS = AmazonWebServices()
+GCP = GoogleCloudPlatform()
+
+def choose_cloud_converse_back(client_query: str) -> str:
+    # CHOOSE WITH THE MODEL
+    modelo = BERTopic.load("BERTopicv1")
+    model_inference = modelo.find_topics("hola me gustaria recibir informes para entrar al equipo de gaming")
+
+    # TODO if model_inference is topic 1 then lex else google algo así.
+    # PROCESS FOR AMAZON LEX
+    text_for_client = AWS.converse_back(client_query)
+
+    # PROCESS FOR GOOGLE DIALOGFLOW
+    # text_for_client = GCP.converse_back(transcript)
+    return text_for_client
 
 @app.route("/")
 def hello_world():
@@ -85,11 +103,19 @@ def webhookVerification():
             return 'success', 200
     return 'error', 403
 
+@app.route('/utterTextFromText', methods=["POST"])
+def utterTextFromText():
+    incoming_json = request.get_json()
+    client_query = incoming_json["clientQuery"]
+    text_for_client = choose_cloud_converse_back(client_query)
+    return text_for_client
+
+
 @app.route('/getTranscription', methods=['POST'])
 def getTranscription():
-    AWS = AmazonWebServices()
-    GCP = GoogleCloudPlatform()
 
+    global AWS
+    global GCP
     print("route getTranscription")
     # The way to get my form fields
     #request.form[]
@@ -207,11 +233,7 @@ def getTranscription():
         transcript = "transcript empty"
 
 
-    # PROCESS FOR AMAZON LEX
-    text_for_client = AWS.converse_back(transcript)
-
-    # PROCESS FOR GOOGLE DIALOGFLOW
-    #text_for_client = GCP.converse_back(transcript)
+    text_for_client = choose_cloud_converse_back(transcript)
 
 
     # PROCESS FOR IBM WATSON
