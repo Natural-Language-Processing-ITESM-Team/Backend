@@ -58,13 +58,37 @@ def choose_cloud_converse_back(client_query: str) -> str:
     modelo = BERTopic.load("BERTopicv1")
     model_inference = modelo.find_topics("hola me gustaria recibir informes para entrar al equipo de gaming")
 
+    most_likely_topic = model_inference[0][0]
     # TODO if model_inference is topic 1 then lex else google algo así.
-    # PROCESS FOR AMAZON LEX
-    text_for_client = AWS.converse_back(client_query)
 
-    # PROCESS FOR GOOGLE DIALOGFLOW
-    # text_for_client = GCP.converse_back(transcript)
+    if most_likely_topic == 3:
+        # PROCESS FOR GOOGLE DIALOGFLOW
+        text_for_client = GCP.converse_back(client_query)
+    elif most_likely_topic == 4:
+        # PROCESS FOR IBM WATSON
+        authenticator = IAMAuthenticator(IBM_access_key)
+        assistant = AssistantV2(
+            version='2021-06-14',
+            authenticator = authenticator
+        )
+
+        assistant.set_service_url('https://api.us-south.assistant.watson.cloud.ibm.com/instances/e0d095a7-17e0-4a51-b9e9-03b6552dd042')
+
+        response = assistant.message_stateless(
+            assistant_id=IBM_assistant,
+            input={
+                'message_type': 'text',
+                'text': client_query
+            }
+        ).get_result()
+
+        text_for_client = response['output']['generic'][0]['text']
+
+    elif most_likely_topic == 2:
+        # PROCESS FOR AMAZON LEX
+        text_for_client = AWS.converse_back(client_query)
     return text_for_client
+
 
 @app.route("/")
 def hello_world():
@@ -236,26 +260,6 @@ def getTranscription():
     text_for_client = choose_cloud_converse_back(transcript)
 
 
-    # PROCESS FOR IBM WATSON
-    """authenticator = IAMAuthenticator(IBM_access_key)
-    assistant = AssistantV2(
-        version='2021-06-14',
-        authenticator = authenticator
-    )
-
-    assistant.set_service_url('https://api.us-south.assistant.watson.cloud.ibm.com/instances/e0d095a7-17e0-4a51-b9e9-03b6552dd042')
-
-    response = assistant.message_stateless(
-        assistant_id=IBM_assistant,
-        input={
-            'message_type': 'text',
-            'text': transcript
-        }
-    ).get_result()
-
-    text_for_client = response['output']['generic'][0]['text']"""
-
-
 
     print(f"response {text_for_client}")
 
@@ -277,8 +281,8 @@ def getTranscription():
                     (SELECT TTSServiceId FROM TTSServices WHERE name = "{best_tts_service}"), 
                     {tts_latency})
             """)
-
-    return {"audio_response_link": audio_response_link, "text_for_client": text_for_client}
+    return audio_response_link
+    #return {"audio_response_link": audio_response_link, "text_for_client": text_for_client}
 
 
     # store file in current folder.
