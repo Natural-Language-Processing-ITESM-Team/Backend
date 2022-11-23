@@ -24,7 +24,7 @@ import time
 from bertopic import BERTopic
 
 active_bot = False
-
+current_topic = None
 # Local related imports
 from amazon_web_services import AmazonWebServices
 from google_cloud_platform import GoogleCloudPlatform
@@ -62,14 +62,14 @@ def choose_cloud_converse_back(client_query: str) -> str:
     if not active_bot:
         model_inference = modelo.find_topics(client_query)
         active_bot = True
+        current_topic = model_inference[0][0]
 
-    most_likely_topic = model_inference[0][0]
     # TODO if model_inference is topic 1 then lex else google algo así.
-    print(f"most likely topic is {most_likely_topic}")
-    if most_likely_topic == 3:
+    print(f"most likely topic is {current_topic}")
+    if current_topic == 3:
         # PROCESS FOR GOOGLE DIALOGFLOW
         text_for_client = GCP.converse_back(client_query)
-    elif most_likely_topic == 4:
+    elif current_topic == 4:
         # PROCESS FOR IBM WATSON
         authenticator = IAMAuthenticator(IBM_access_key)
         assistant = AssistantV2(
@@ -89,12 +89,13 @@ def choose_cloud_converse_back(client_query: str) -> str:
 
         text_for_client = response['output']['generic'][0]['text']
 
-    elif most_likely_topic == 2:
+    elif current_topic == 2:
         # PROCESS FOR AMAZON LEX
         text_for_client = AWS.converse_back(client_query)
 
     if text_for_client == "gracias por su preferencia":
         active_bot = False
+        
     return text_for_client
 
 
