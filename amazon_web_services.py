@@ -104,7 +104,9 @@ class AmazonWebServices:
         if('messages' in bot_response):
             print("messages ")
             print(bot_response['messages'])
-            text_for_client = bot_response['messages'][0]['content']
+            text_for_client = ""
+            for json_msg in bot_response['messages']:
+                text_for_client += json_msg['content']
         else:
             text_for_client = 'No he entendido'
 
