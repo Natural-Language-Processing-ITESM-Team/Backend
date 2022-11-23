@@ -252,7 +252,7 @@ def getTranscription():
 
     print("I'm going to insert the latency of stt into database.")
 
-    if stt_measure == "Latency":
+    if stt_measure == "Latencia":
         db_cursor.execute( \
             f"""
             INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
@@ -296,7 +296,7 @@ def getTranscription():
 
     tts_latency = (time.time() - tts_start_time) * 1000
 
-    if tts_measure == "Latency":
+    if tts_measure == "Latencia":
         db_cursor.execute( \
             f"""
             INSERT INTO TTSBenchmarks (metricId, TTSServiceId, benchmarkValue) 
