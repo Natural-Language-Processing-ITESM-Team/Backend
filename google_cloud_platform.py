@@ -64,7 +64,7 @@ class GoogleCloudPlatform:
         text_for_client = ""
         for json_msg in response.query_result.fulfillment_messages:
             #print(dir(json_msg.text))
-            print(json_msg.text.text)
+            text_for_client += json_msg.text.text[0]
             #text_for_client += json_msg.text
 
         #text_for_client = response.query_result.fulfillment_text
