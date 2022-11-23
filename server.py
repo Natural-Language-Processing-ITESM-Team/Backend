@@ -20,6 +20,7 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from google.cloud import texttospeech
 import google.cloud.texttospeech as tts
 import meta_api
+import time
 
 # Local related imports
 from amazon_web_services import AmazonWebServices
@@ -174,7 +175,9 @@ def getTranscription():
 
     if best_stt_service == "Transcribe":
         # PROCESS FOR AWS TRANSCRIPTION
+        stt_start_time = time.time()
         transcript = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
+        stt_latency = time.time() - stt_start_time
     elif best_stt_service == "Google":
         transcript = GCP.transcribe_audio_file(file_key, AWS)
 
