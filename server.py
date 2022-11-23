@@ -93,9 +93,9 @@ def choose_cloud_converse_back(client_query: str) -> str:
         # PROCESS FOR AMAZON LEX
         text_for_client = AWS.converse_back(client_query)
 
-    if text_for_client == "gracias por su preferencia":
+    if text_for_client == "gracias por tu preferencia":
         active_bot = False
-        
+
     return text_for_client
 
 
