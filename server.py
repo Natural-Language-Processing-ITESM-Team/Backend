@@ -260,6 +260,12 @@ def getTranscription():
                     (SELECT STTServiceId FROM STTServices WHERE name = "{best_stt_service}"), 
                     {stt_latency})
             """)
+        print(f"""
+            INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+            VALUES ((SELECT metricId FROM Metrics WHERE name = "{stt_measure}"), 
+                    (SELECT STTServiceId FROM STTServices WHERE name = "{best_stt_service}"), 
+                    {stt_latency})
+            """)
     elif stt_measure == "Exactitud":
         #TODO
         pass
