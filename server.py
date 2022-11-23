@@ -56,7 +56,7 @@ GCP = GoogleCloudPlatform()
 def choose_cloud_converse_back(client_query: str) -> str:
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
-    model_inference = modelo.find_topics("hola me gustaria recibir informes para entrar al equipo de gaming")
+    model_inference = modelo.find_topics(client_query)
 
     most_likely_topic = model_inference[0][0]
     # TODO if model_inference is topic 1 then lex else google algo así.
