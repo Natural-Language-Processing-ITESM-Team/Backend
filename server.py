@@ -87,6 +87,7 @@ def choose_cloud_converse_back(client_query: str) -> str:
                 'text': client_query
             }
         ).get_result()
+        print(response['output']['generic'])
         text_for_client = ""
         for json_msg in response['output']['generic']:
             text_for_client += json_msg["text"]
