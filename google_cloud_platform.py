@@ -61,7 +61,7 @@ class GoogleCloudPlatform:
         except InvalidArgument:
             raise
         for json_msg in response.query_result.fulfillment_messages:
-            print(json_msg["text"])
+            print(dir(json_msg))
 
         text_for_client = response.query_result.fulfillment_text
         return text_for_client
