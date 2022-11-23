@@ -103,6 +103,7 @@ def choose_cloud_converse_back(client_query: str) -> str:
 
     if "muchas gracias por tu preferencia" in text_for_client:
         active_bot = False
+        print("termina conversacion")
 
     return text_for_client
 
