@@ -60,10 +60,12 @@ class GoogleCloudPlatform:
             response = session_client.detect_intent(session=session, query_input=query_input)
         except InvalidArgument:
             raise
-        for json_msg in response.query_result.fulfillment_messages:
-            print(dir(json_msg))
 
-        text_for_client = response.query_result.fulfillment_text
+        text_for_client = ""
+        for json_msg in response.query_result.fulfillment_messages:
+            text_for_client += json_msg.text
+
+        #text_for_client = response.query_result.fulfillment_text
         return text_for_client
 
     def synthesize_text(self, input_text, client, AWS, output_key):
