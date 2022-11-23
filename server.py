@@ -59,6 +59,7 @@ def choose_cloud_converse_back(client_query: str) -> str:
     modelo = BERTopic.load("BERTopicv1")
 
     global active_bot
+    global current_topic
     if not active_bot:
         model_inference = modelo.find_topics(client_query)
         active_bot = True
