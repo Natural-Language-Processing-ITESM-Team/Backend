@@ -60,7 +60,7 @@ def choose_cloud_converse_back(client_query: str) -> str:
 
     most_likely_topic = model_inference[0][0]
     # TODO if model_inference is topic 1 then lex else google algo así.
-
+    print(f"most likely topic is {most_likely_topic}")
     if most_likely_topic == 3:
         # PROCESS FOR GOOGLE DIALOGFLOW
         text_for_client = GCP.converse_back(client_query)
