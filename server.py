@@ -23,6 +23,7 @@ import meta_api
 import time
 from bertopic import BERTopic
 
+active_bot = False
 
 # Local related imports
 from amazon_web_services import AmazonWebServices
@@ -56,7 +57,11 @@ GCP = GoogleCloudPlatform()
 def choose_cloud_converse_back(client_query: str) -> str:
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
-    model_inference = modelo.find_topics(client_query)
+
+    global active_bot
+    if not active_bot:
+        model_inference = modelo.find_topics(client_query)
+        active_bot = True
 
     most_likely_topic = model_inference[0][0]
     # TODO if model_inference is topic 1 then lex else google algo así.
@@ -87,6 +92,9 @@ def choose_cloud_converse_back(client_query: str) -> str:
     elif most_likely_topic == 2:
         # PROCESS FOR AMAZON LEX
         text_for_client = AWS.converse_back(client_query)
+
+    if text_for_client == "gracias por su preferencia":
+        active_bot = False
     return text_for_client
 
 
