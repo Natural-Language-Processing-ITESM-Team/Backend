@@ -161,7 +161,7 @@ def getTranscription():
     best_tts_benchmark = rows[0][1]
     print(f"best stt service for {tts_measure} is {best_tts_service}")
 
-    return
+
     # REMOVE THIS WHEN DONE TESTING
     #best_stt_service = "Google"
     """if best_stt_service == "Azure":
@@ -172,14 +172,30 @@ def getTranscription():
         os.system('ffmpeg -i "client.webm" -vn "client.wav"')
         transcript = recognize_from_file("client.wav")
         os.system('rm -rf client.wav')"""
+    stt_start_time = time.time()
 
     if best_stt_service == "Transcribe":
         # PROCESS FOR AWS TRANSCRIPTION
-        stt_start_time = time.time()
         transcript = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
-        stt_latency = time.time() - stt_start_time
-    elif best_stt_service == "Google":
+    elif best_stt_service == "GoogleSTT":
         transcript = GCP.transcribe_audio_file(file_key, AWS)
+
+    stt_latency = (time.time() - stt_start_time) * 1000
+    print(f"stt latency is {stt_latency}")
+
+    print("I'm going to insert the latency of stt into database.")
+
+    if stt_measure == "Latency":
+        db_cursor.execute( \
+            f"""
+            INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
+            VALUES ((SELECT metricId FROM Metrics WHERE name = "{stt_measure}"), 
+                    (SELECT STTServiceId FROM STTServices WHERE name = "{best_stt_service}"), 
+                    {stt_latency})
+            """)
+    elif stt_measure == "Exactitud":
+        #TODO
+        pass
 
     print(f"prompt {transcript}")
     # Remove files for all next rounds.
@@ -189,7 +205,8 @@ def getTranscription():
 
     if not transcript: # None or empty sequence
         transcript = "transcript empty"
-    
+
+
     # PROCESS FOR AMAZON LEX
     text_for_client = AWS.converse_back(transcript)
 
@@ -220,12 +237,24 @@ def getTranscription():
 
     print(f"response {text_for_client}")
 
+    tts_start_time = time.time()
+    if best_tts_service == "Polly":
+        # AWS TTS
+        audio_response_link = AWS.vocalize(text_for_client, file_key[:-4] + "mp3")
+    elif best_tts_service == "GoogleTTS":
+        # TTS FOR GOOGLE
+        audio_response_link = GCP.vocalize(text_for_client, AWS)
 
-    # AWS TTS
-    #audio_response_link = AWS.vocalize(text_for_client, file_key[:-4] + "mp3")
+    tts_latency = (time.time() - tts_start_time) * 1000
 
-    # TTS FOR GOOGLE
-    audio_response_link = GCP.vocalize(text_for_client, AWS)
+    if tts_measure == "Latency":
+        db_cursor.execute( \
+            f"""
+            INSERT INTO TTSBenchmarks (metricId, TTSServiceId, benchmarkValue) 
+            VALUES ((SELECT metricId FROM Metrics WHERE name = "{tts_measure}"), 
+                    (SELECT TTSServiceId FROM TTSServices WHERE name = "{best_tts_service}"), 
+                    {tts_latency})
+            """)
 
     return audio_response_link
 
