@@ -90,10 +90,12 @@ def choose_cloud_converse_back(client_query: str) -> str:
         print(response['output']['generic'])
         text_for_client = ""
         for json_msg in response['output']['generic']:
-            text_for_client += json_msg["text"]
+            if "text" in json_msg and "response_type" in json_msg:
+                text_for_client += json_msg["text"]
 
-        return text_for_client
+
         #text_for_client = response['output']['generic'][0]['text']
+        return text_for_client
 
     elif current_topic == 2:
         # PROCESS FOR AMAZON LEX
