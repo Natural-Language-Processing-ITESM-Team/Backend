@@ -22,7 +22,7 @@ import google.cloud.texttospeech as tts
 import meta_api
 import time
 from bertopic import BERTopic
-from watson_stt import transcribe_audio_file
+from watson_stt import transcribe_audio_file, vocalize
 
 active_bot = False
 current_topic = None
@@ -290,7 +290,7 @@ def getTranscription():
 
 
     print(f"response {text_for_client}")
-
+    best_tts_service = "WatsonTTS"
     tts_start_time = time.time()
     if best_tts_service == "Polly":
         # AWS TTS
@@ -298,6 +298,8 @@ def getTranscription():
     elif best_tts_service == "GoogleTTS":
         # TTS FOR GOOGLE
         audio_response_link = GCP.vocalize(text_for_client, AWS)
+    elif best_stt_service == "WatsonTTS":
+        audio_response_link = vocalize((text_for_client))
 
     tts_latency = (time.time() - tts_start_time) * 1000
 

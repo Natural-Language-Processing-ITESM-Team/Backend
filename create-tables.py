@@ -132,6 +132,11 @@ db_cursor.execute( \
 
 db_cursor.execute( \
     """
+    INSERT INTO TTSServices (name) VALUES ("WatsonTTS")
+    """)
+
+db_cursor.execute( \
+    """
     INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
     VALUES ((SELECT metricId FROM Metrics WHERE name = "Latencia"), 
             (SELECT STTServiceId FROM STTServices WHERE name = "Transcribe"), 
