@@ -95,8 +95,6 @@ def choose_cloud_converse_back(client_query: str) -> str:
 
 
         #text_for_client = response['output']['generic'][0]['text']
-        return text_for_client
-
     elif current_topic == 2:
         # PROCESS FOR AMAZON LEX
         text_for_client = AWS.converse_back(client_query)
