@@ -12,7 +12,7 @@ from amazon_web_services import AmazonWebServices
 def transcribe_audio_file(file_key):
     load_dotenv("secrets.env")
 
-    iam_authenticator = os.getenv("IAM_AUTHENTICATOR")
+    iam_authenticator = os.getenv("WATSON_STT_KEY")
     stt_url = os.getenv("WATSON_STT_URL")
 
     authenticator = IAMAuthenticator(iam_authenticator)
