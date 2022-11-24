@@ -250,6 +250,8 @@ def getTranscription():
     elif best_stt_service == "WatsonSTT":
         transcript = transcribe_audio_file(file_key)
 
+    print(f"prompt {transcript}")
+
     stt_latency = (time.time() - stt_start_time) * 1000
     print(f"stt latency is {stt_latency}")
 
@@ -273,7 +275,7 @@ def getTranscription():
         #TODO
         pass
 
-    print(f"prompt {transcript}")
+
     # Remove files for all next rounds.
     #AWS.delete_object(file_key) amazon needs it kind of
 
