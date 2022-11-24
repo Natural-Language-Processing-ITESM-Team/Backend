@@ -303,8 +303,8 @@ def getTranscription():
                     (SELECT TTSServiceId FROM TTSServices WHERE name = "{best_tts_service}"), 
                     {tts_latency})
             """)
-    return audio_response_link
-    #return {"audio_response_link": audio_response_link, "text_for_client": text_for_client}
+    #return audio_response_link
+    return {"audio_response_link": audio_response_link, "text_for_client": text_for_client}
 
 
     # store file in current folder.
