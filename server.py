@@ -298,7 +298,7 @@ def getTranscription():
     elif best_tts_service == "GoogleTTS":
         # TTS FOR GOOGLE
         audio_response_link = GCP.vocalize(text_for_client, AWS)
-    elif best_stt_service == "WatsonTTS":
+    elif best_tts_service == "WatsonTTS":
         audio_response_link = vocalize(text_for_client)
 
     tts_latency = (time.time() - tts_start_time) * 1000
