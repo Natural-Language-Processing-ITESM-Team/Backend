@@ -22,6 +22,7 @@ import google.cloud.texttospeech as tts
 import meta_api
 import time
 from bertopic import BERTopic
+from watson_stt import transcribe_audio_file
 
 active_bot = False
 current_topic = None
@@ -229,7 +230,7 @@ def getTranscription():
 
 
     # REMOVE THIS WHEN DONE TESTING
-    #best_stt_service = "Google"
+    best_stt_service = "WatsonSTT"
     """if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.
@@ -245,6 +246,9 @@ def getTranscription():
         transcript = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
     elif best_stt_service == "GoogleSTT":
         transcript = GCP.transcribe_audio_file(file_key, AWS)
+
+    elif best_stt_service == "WatsonSTT":
+        transcript = transcribe_audio_file(file_key)
 
     stt_latency = (time.time() - stt_start_time) * 1000
     print(f"stt latency is {stt_latency}")
