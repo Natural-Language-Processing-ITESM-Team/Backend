@@ -243,7 +243,7 @@ def getTranscription():
 
     if best_stt_service == "Transcribe":
         # PROCESS FOR AWS TRANSCRIPTION
-        transcript = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
+        transcript, confidence = AWS.transcribe_audio_file('Example-job', file_key, file_key[:-4] + "json")
     elif best_stt_service == "GoogleSTT":
         transcript = GCP.transcribe_audio_file(file_key, AWS)
 

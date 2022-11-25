@@ -87,13 +87,16 @@ class AmazonWebServices:
         with open('helloback.json', 'r') as f:
             json_data = json.load(f)
         print(F"AWS TRANSCRIBE SPEECH TO TEXT {json_data}")
+        avg_confidence = 0
 
-        for transcript_item in json_data["results"]["items"]:
+        for item_no, transcript_item in enumerate(["results"]["items"]):
             print(f"transcript_item is {transcript_item}")
-            print(f"confidence is {transcript_item[0]['alternatives'][0]['confidence']}")
+            avg_confidence += transcript_item["alternatives"][0]["confidence"]
+
+        avg_confidence /= (item_no + 1)
         transcript = json_data["results"]["transcripts"][0]["transcript"]
 
-        return transcript
+        return transcript, avg_confidence
 
     def converse_back(self, client_string):
         bot_response = self.lex_client.recognize_text(
