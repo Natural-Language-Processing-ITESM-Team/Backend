@@ -12,6 +12,7 @@ from ibm_watson import AssistantV2
 
 import meta_api
 from watson_stt import transcribe_audio_file, vocalize
+from azure_services import transcribe_audio_file as azure_transcribe_audio_file
 
 active_bot = False
 current_topic = None
@@ -219,7 +220,7 @@ def getTranscription():
 
 
     # REMOVE THIS WHEN DONE TESTING
-    best_stt_service = "Transcribe"
+    best_stt_service = "AzureSTT"
     """if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.
@@ -238,6 +239,8 @@ def getTranscription():
 
     elif best_stt_service == "WatsonSTT":
         transcript, confidence = transcribe_audio_file(file_key)
+    elif best_stt_service == "AzureSTT":
+        transcript = azure_transcribe_audio_file(file_key, AWS)
 
     print(f"prompt {transcript} confidence {confidence}")
 

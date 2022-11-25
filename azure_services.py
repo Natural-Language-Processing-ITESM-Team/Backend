@@ -45,7 +45,7 @@ def transcribe_audio_file(file_key, AWS):
 
 
 
-
+"""
 
 
 # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
@@ -72,5 +72,4 @@ elif speech_synthesis_result.reason == speechsdk.ResultReason.Canceled:
     if cancellation_details.reason == speechsdk.CancellationReason.Error:
         if cancellation_details.error_details:
             print("Error details: {}".format(cancellation_details.error_details))
-            print("Did you set the speech resource key and region values?")
-
+            print("Did you set the speech resource key and region values?")"""
