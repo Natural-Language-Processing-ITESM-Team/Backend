@@ -1,27 +1,16 @@
-from asyncore import poll
-from flask import request
-from flask import Flask
-import boto3
-import json
-from flask_cors import CORS
-from transcribe_test import transcribe_file
-from dotenv import load_dotenv
 import os
-from polly_test import get_polly_audio
-from azure_speech_to_text import recognize_from_file
-import dialogflow
-from google.api_core.exceptions import InvalidArgument
-from flask import jsonify
 import time
+
 import pymysql
-import json
-from ibm_watson import AssistantV2
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from google.cloud import texttospeech
-import google.cloud.texttospeech as tts
-import meta_api
-import time
 from bertopic import BERTopic
+from dotenv import load_dotenv
+from flask import Flask
+from flask import request
+from flask_cors import CORS
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson import AssistantV2
+
+import meta_api
 from watson_stt import transcribe_audio_file, vocalize
 
 active_bot = False
