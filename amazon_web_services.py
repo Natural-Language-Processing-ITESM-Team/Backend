@@ -89,7 +89,7 @@ class AmazonWebServices:
         print(F"AWS TRANSCRIBE SPEECH TO TEXT {json_data}")
         avg_confidence = 0
 
-        for item_no, transcript_item in enumerate(["results"]["items"]):
+        for item_no, transcript_item in enumerate(json_data["results"]["items"]):
             print(f"transcript_item is {transcript_item}")
             avg_confidence += transcript_item["alternatives"][0]["confidence"]
 
