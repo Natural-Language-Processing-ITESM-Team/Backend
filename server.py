@@ -248,9 +248,9 @@ def getTranscription():
         transcript = GCP.transcribe_audio_file(file_key, AWS)
 
     elif best_stt_service == "WatsonSTT":
-        transcript = transcribe_audio_file(file_key)
+        transcript, confidence = transcribe_audio_file(file_key)
 
-    print(f"prompt {transcript}")
+    print(f"prompt {transcript} confidence {confidence}")
 
     stt_latency = (time.time() - stt_start_time) * 1000
     print(f"stt latency is {stt_latency}")

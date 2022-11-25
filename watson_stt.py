@@ -30,9 +30,10 @@ def transcribe_audio_file(file_key):
     with open("client.webm", 'rb') as f:
         res = stt.recognize(audio=f, content_type='audio/webm', model='es-MX_NarrowbandModel',
                             inactivity_timeout=-1).get_result()
-    print(F"THE WATSON SPEECH TO TEXT {res}")
+    #print(F"THE WATSON SPEECH TO TEXT {res}")
     transcript = res['results'][0]['alternatives'][0]['transcript']
-    return transcript
+    confidence = res['results'][0]['alternatives'][0]['confidence']
+    return transcript, confidence
 
 def vocalize(text_for_client: str):
     tts_key = os.getenv("WATSON_TTS_KEY")
