@@ -230,7 +230,7 @@ def getTranscription():
 
 
     # REMOVE THIS WHEN DONE TESTING
-    best_stt_service = "WatsonSTT"
+    best_stt_service = "Transcribe"
     """if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.

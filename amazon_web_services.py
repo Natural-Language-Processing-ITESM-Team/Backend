@@ -86,6 +86,7 @@ class AmazonWebServices:
         self.s3_client.download_file("buketa", file_key[:-4] + "json", "helloback.json")
         with open('helloback.json', 'r') as f:
             json_data = json.load(f)
+        print(F"AWS TRANSCRIBE SPEECH TO TEXT {json_data}")
         transcript = json_data["results"]["transcripts"][0]["transcript"]
 
         return transcript
