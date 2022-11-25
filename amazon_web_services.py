@@ -90,8 +90,8 @@ class AmazonWebServices:
         avg_confidence = 0
 
         for item_no, transcript_item in enumerate(json_data["results"]["items"]):
-            print(f"transcript_item is {transcript_item}")
-            avg_confidence += transcript_item["alternatives"][0]["confidence"]
+            print(f"confidence is {transcript_item['alternatives'][0]['confidence']}")
+            avg_confidence += float(transcript_item["alternatives"][0]["confidence"])
 
         avg_confidence /= (item_no + 1)
         transcript = json_data["results"]["transcripts"][0]["transcript"]
