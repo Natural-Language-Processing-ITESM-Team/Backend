@@ -87,6 +87,10 @@ class AmazonWebServices:
         with open('helloback.json', 'r') as f:
             json_data = json.load(f)
         print(F"AWS TRANSCRIBE SPEECH TO TEXT {json_data}")
+
+        for transcript_item in json_data["results"]["items"]:
+            print(f"transcript_item is {transcript_item}")
+            print(f"confidence is {transcript_item[0]['alternatives'][0]['confidence']}")
         transcript = json_data["results"]["transcripts"][0]["transcript"]
 
         return transcript
