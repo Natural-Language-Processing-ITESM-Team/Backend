@@ -240,7 +240,7 @@ def getTranscription():
     elif best_stt_service == "WatsonSTT":
         transcript, confidence = transcribe_audio_file(file_key)
     elif best_stt_service == "AzureSTT":
-        transcript = azure_transcribe_audio_file(file_key, AWS)
+        transcript, confidence = azure_transcribe_audio_file(file_key, AWS)
 
     print(f"prompt {transcript} confidence {confidence}")
 

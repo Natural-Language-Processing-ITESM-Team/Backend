@@ -26,7 +26,7 @@ def transcribe_audio_file(file_key, AWS):
     speech_recognition_result = speech_recognizer.recognize_once_async().get()
     print(F"AZURE SPEECH TO TEXT RESPONSE {speech_recognition_result}")
     if speech_recognition_result.reason == speechsdk.ResultReason.RecognizedSpeech:
-        return speech_recognition_result.text
+        return speech_recognition_result.text, 0.5
     elif speech_recognition_result.reason == speechsdk.ResultReason.NoMatch:
         print("No speech could be recognized: {}".format(speech_recognition_result.no_match_details))
     elif speech_recognition_result.reason == speechsdk.ResultReason.Canceled:
@@ -35,7 +35,7 @@ def transcribe_audio_file(file_key, AWS):
         if cancellation_details.reason == speechsdk.CancellationReason.Error:
             print("Error details: {}".format(cancellation_details.error_details))
             print("Did you set the speech resource key and region values?")
-
+    return
 
 
 
