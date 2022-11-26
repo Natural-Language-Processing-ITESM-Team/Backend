@@ -24,6 +24,9 @@ def transcribe_audio_file(file_key, AWS):
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
 
     speech_recognition_result = speech_recognizer.recognize_once_async().get()
+
+    os.system('rm -rf "client.webm"')
+    os.system('rm -rf "client.wav"')
     print(F"AZURE SPEECH TO TEXT RESPONSE {speech_recognition_result}")
     if speech_recognition_result.reason == speechsdk.ResultReason.RecognizedSpeech:
         return speech_recognition_result.text, 0.5

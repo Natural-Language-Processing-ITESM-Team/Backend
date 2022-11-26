@@ -122,6 +122,11 @@ db_cursor.execute( \
 
 db_cursor.execute( \
     """
+    INSERT INTO STTServices (name) VALUES ("AzureSTT")
+    """)
+
+db_cursor.execute( \
+    """
     INSERT INTO TTSServices (name) VALUES ("Polly")
     """)
 
