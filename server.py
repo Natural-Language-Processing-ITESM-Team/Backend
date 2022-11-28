@@ -14,8 +14,8 @@ import meta_api
 from watson_stt import transcribe_audio_file, vocalize
 from azure_services import transcribe_audio_file as azure_transcribe_audio_file
 
-active_bot = False
-current_topic = None
+#active_bot = False
+#current_topic = None
 # Local related imports
 from amazon_web_services import AmazonWebServices
 from google_cloud_platform import GoogleCloudPlatform
@@ -45,15 +45,15 @@ CORS(app)
 AWS = AmazonWebServices()
 GCP = GoogleCloudPlatform()
 
-def choose_cloud_converse_back(client_query: str, client_id) -> str:
+def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> str:
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
 
-    global active_bot
-    global current_topic
-    if not active_bot:
+    #global active_bot
+    #global current_topic
+    if current_topic == -2:
         model_inference = modelo.find_topics(client_query)
-        active_bot = True
+        #active_bot = True
         current_topic = model_inference[0][0]
 
     # TODO if model_inference is topic 1 then lex else google algo así.
@@ -93,8 +93,9 @@ def choose_cloud_converse_back(client_query: str, client_id) -> str:
     if "muchas gracias por tu preferencia" in text_for_client:
         active_bot = False
         print("termina conversacion")
+        current_topic = -2
 
-    return text_for_client
+    return text_for_client, current_topic
 
 
 @app.route("/")
@@ -137,9 +138,10 @@ def webhookVerification():
 @app.route('/utterTextFromText', methods=["POST"])
 def utterTextFromText():
     incoming_json = request.get_json()
+    client_id = incoming_json["clientID"]
     client_query = incoming_json["clientQuery"]
-    text_for_client = choose_cloud_converse_back(client_query)
-    global current_topic
+    text_for_client, current_topic = choose_cloud_converse_back(client_query, client_id)
+    #global current_topic
     return {"text_for_client": text_for_client, "topic": current_topic}
 
 
@@ -279,7 +281,7 @@ def getTranscription():
         transcript = "transcript empty"
 
 
-    text_for_client = choose_cloud_converse_back(transcript, client_id)
+    text_for_client, current_topic = choose_cloud_converse_back(transcript, client_id)
 
 
 
@@ -306,7 +308,7 @@ def getTranscription():
                     {tts_latency})
             """)
     #return audio_response_link
-    global current_topic
+
     return {"audio_response_link": audio_response_link, "text_for_client": text_for_client, "topic": current_topic}
 
 
