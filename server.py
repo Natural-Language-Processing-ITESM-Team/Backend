@@ -156,6 +156,7 @@ def getTranscription():
     file_key = incoming_json["key"]
     stt_measure = incoming_json["sttMeasure"]
     tts_measure = incoming_json["ttsMeasure"]
+    client_id = incoming_json["clientID"]
     #stt_measure = "latency"
     print(f"stt measure is {stt_measure}")
     print(f"tts measure is {tts_measure}")
@@ -220,7 +221,7 @@ def getTranscription():
 
 
     # REMOVE THIS WHEN DONE TESTING
-    best_stt_service = "AzureSTT"
+    #best_stt_service = "AzureSTT"
     """if best_stt_service == "Azure":
         # PROCESS FOR AZURE TRANSCRIPTION
         # Download audio file from s3.
@@ -277,7 +278,7 @@ def getTranscription():
         transcript = "transcript empty"
 
 
-    text_for_client = choose_cloud_converse_back(transcript)
+    text_for_client = choose_cloud_converse_back(transcript, client_id)
 
 
 

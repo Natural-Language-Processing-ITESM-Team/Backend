@@ -98,12 +98,12 @@ class AmazonWebServices:
 
         return transcript, avg_confidence
 
-    def converse_back(self, client_string):
+    def converse_back(self, client_string, client_id):
         bot_response = self.lex_client.recognize_text(
                 botId='P5LSOCLGUI',
                 botAliasId='TSTALIASID',
                 localeId='es_419',
-                sessionId="test_session2",
+                sessionId=client_id,
                 text=client_string)
 
         print("bot response")
