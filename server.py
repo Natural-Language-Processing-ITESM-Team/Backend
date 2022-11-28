@@ -60,7 +60,7 @@ def choose_cloud_converse_back(client_query: str) -> str:
     print(f"most likely topic is {current_topic}")
     if current_topic == 3:
         # PROCESS FOR GOOGLE DIALOGFLOW
-        text_for_client = GCP.converse_back(client_query)
+        text_for_client = GCP.converse_back(client_query, client_id)
     elif current_topic == 4:
         # PROCESS FOR IBM WATSON
         authenticator = IAMAuthenticator(IBM_access_key)
@@ -88,7 +88,7 @@ def choose_cloud_converse_back(client_query: str) -> str:
         #text_for_client = response['output']['generic'][0]['text']
     elif current_topic == 2:
         # PROCESS FOR AMAZON LEX
-        text_for_client = AWS.converse_back(client_query)
+        text_for_client = AWS.converse_back(client_query, client_id)
 
     if "muchas gracias por tu preferencia" in text_for_client:
         active_bot = False
