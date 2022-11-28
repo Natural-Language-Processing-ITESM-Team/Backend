@@ -145,6 +145,7 @@ def utterTextFromText():
     client_id = incoming_json["clientID"]
     client_query = incoming_json["clientQuery"]
     current_topic = incoming_json["topic"]
+    print(f"id is {client_id}, topic is {current_topic}, query is {client_query}")
     text_for_client, current_topic = choose_cloud_converse_back(client_query, client_id, current_topic)
     #global current_topic
     return {"text_for_client": text_for_client, "topic": current_topic}
