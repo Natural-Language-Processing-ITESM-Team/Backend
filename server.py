@@ -140,7 +140,8 @@ def utterTextFromText():
     incoming_json = request.get_json()
     client_id = incoming_json["clientID"]
     client_query = incoming_json["clientQuery"]
-    text_for_client, current_topic = choose_cloud_converse_back(client_query, client_id)
+    current_topic = incoming_json["topic"]
+    text_for_client, current_topic = choose_cloud_converse_back(client_query, client_id, current_topic)
     #global current_topic
     return {"text_for_client": text_for_client, "topic": current_topic}
 
@@ -159,6 +160,7 @@ def getTranscription():
     file_key = incoming_json["key"]
     stt_measure = incoming_json["sttMeasure"]
     tts_measure = incoming_json["ttsMeasure"]
+    current_topic = incoming_json["topic"]
     client_id = incoming_json["clientID"]
     #stt_measure = "latency"
     print(f"stt measure is {stt_measure}")
@@ -281,7 +283,7 @@ def getTranscription():
         transcript = "transcript empty"
 
 
-    text_for_client, current_topic = choose_cloud_converse_back(transcript, client_id)
+    text_for_client, current_topic = choose_cloud_converse_back(transcript, client_id, current_topic)
 
 
 
