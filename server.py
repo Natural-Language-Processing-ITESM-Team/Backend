@@ -45,7 +45,7 @@ CORS(app)
 AWS = AmazonWebServices()
 GCP = GoogleCloudPlatform()
 
-def choose_cloud_converse_back(client_query: str) -> str:
+def choose_cloud_converse_back(client_query: str, client_id) -> str:
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
 
