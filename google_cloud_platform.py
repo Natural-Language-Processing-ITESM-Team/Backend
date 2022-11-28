@@ -53,7 +53,7 @@ class GoogleCloudPlatform:
 
     def converse_back(self, client_string, client_id):
         session_client = dialogflow.SessionsClient()
-        session = session_client.session_path(self.DIALOGFLOW_PROJECT_ID, self.SESSION_ID)
+        session = session_client.session_path(self.DIALOGFLOW_PROJECT_ID, client_id)
         text_input = dialogflow.types.TextInput(text=client_string, language_code=self.DIALOGFLOW_LANGUAGE_CODE)
         query_input = dialogflow.types.QueryInput(text=text_input)
         try:
