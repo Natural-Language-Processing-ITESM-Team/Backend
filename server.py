@@ -139,7 +139,8 @@ def utterTextFromText():
     incoming_json = request.get_json()
     client_query = incoming_json["clientQuery"]
     text_for_client = choose_cloud_converse_back(client_query)
-    return text_for_client
+    global current_topic
+    return {"text_for_client": text_for_client, "topic": current_topic}
 
 
 @app.route('/getTranscription', methods=['POST'])
@@ -305,7 +306,8 @@ def getTranscription():
                     {tts_latency})
             """)
     #return audio_response_link
-    return {"audio_response_link": audio_response_link, "text_for_client": text_for_client}
+    global current_topic
+    return {"audio_response_link": audio_response_link, "text_for_client": text_for_client, "topic": current_topic}
 
 
     # store file in current folder.
