@@ -90,7 +90,7 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> s
         # PROCESS FOR AMAZON LEX
         text_for_client = AWS.converse_back(client_query, client_id)
 
-    elif current_topic == -1:
+    elif current_topic == -1 or text_for_client == "":
         text_for_client = "No he entendido, por favor repite tu petición."
         current_topic = -2
 
