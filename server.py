@@ -183,7 +183,7 @@ def uploadFile():
     file.save(file.name)
     global AWS
     AWS.s3_client.upload_file(file.name, 'buketa', file.name)
-    return 200
+    return "success", 200
 
 
 @app.route('/getTranscription', methods=['POST'])
