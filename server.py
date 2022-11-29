@@ -53,7 +53,7 @@ class Topics(Enum):
 
 
 
-
+"""
 class DBQueryHandler:
     def __init__(self):
         self._db_cursor #
@@ -61,7 +61,7 @@ class DBQueryHandler:
     def get_latencia(self, stt_..):
          # holds query
         retur
-
+"""
 def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> str:
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
