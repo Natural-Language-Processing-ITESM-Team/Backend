@@ -180,9 +180,12 @@ def uploadFile():
     file = request.files["file"]
     #print(file)
     #print(dir(file))
-    file.save(file.name)
+    print(f"received file {file.name}")
+
+    key = "transcribe/" + file.name
+    file.save(key)
     global AWS
-    AWS.s3_client.upload_file(file.name, 'buketa', file.name)
+    AWS.s3_client.upload_file(file.name, 'buketa', key)
     return "success", 200
 
 
