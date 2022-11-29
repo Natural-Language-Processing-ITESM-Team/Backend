@@ -32,7 +32,7 @@ def transcribe_audio_file(file_key, AWS):
         return speech_recognition_result.text, 0.5
     elif speech_recognition_result.reason == speechsdk.ResultReason.NoMatch:
         print("No speech could be recognized: {}".format(speech_recognition_result.no_match_details))
-        return "Puedes repetirlo, por favor?", 0.5
+        return "", 0.5
     elif speech_recognition_result.reason == speechsdk.ResultReason.Canceled:
         cancellation_details = speech_recognition_result.cancellation_details
         print("Speech Recognition canceled: {}".format(cancellation_details.reason))
