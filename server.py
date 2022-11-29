@@ -51,7 +51,8 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> s
 
     #global active_bot
     #global current_topic
-    if current_topic == -2:
+
+    if current_topic == -2 or client_query == "":
         model_inference = modelo.find_topics(client_query)
         #active_bot = True
         current_topic = model_inference[0][0]
@@ -90,7 +91,7 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> s
         # PROCESS FOR AMAZON LEX
         text_for_client = AWS.converse_back(client_query, client_id)
 
-    elif current_topic == -1 or text_for_client == "":
+    elif current_topic == -1:
         text_for_client = "No he entendido, por favor repite tu petición."
         current_topic = -2
 
