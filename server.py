@@ -175,6 +175,14 @@ def utterTextFromText():
     #global current_topic
     return {"text_for_client": text_for_client, "topic": current_topic}
 
+@app.route('/uploadFile', methods=["POST"],)
+def uploadFile():
+    file = request.files["file"]
+    print(file)
+    print(dir(file))
+    #global AWS
+    #AWS.s3_client.upload_file(file, 'buketa', output_key)
+
 
 @app.route('/getTranscription', methods=['POST'])
 def getTranscription():
