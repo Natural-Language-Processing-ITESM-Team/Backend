@@ -45,6 +45,23 @@ CORS(app)
 AWS = AmazonWebServices()
 GCP = GoogleCloudPlatform()
 
+from enum import Enum
+
+class Topics(Enum):
+   GREET = -1
+   BLAH = 2
+
+
+
+
+class DBQueryHandler:
+    def __init__(self):
+        self._db_cursor #
+
+    def get_latencia(self, stt_..):
+         # holds query
+        retur
+
 def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> str:
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
@@ -62,29 +79,8 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> s
     if current_topic == 3:
         # PROCESS FOR GOOGLE DIALOGFLOW
         text_for_client = GCP.converse_back(client_query, client_id)
-    elif current_topic == 4:
-        # PROCESS FOR IBM WATSON
-        authenticator = IAMAuthenticator(IBM_access_key)
-        assistant = AssistantV2(
-            version='2021-06-14',
-            authenticator = authenticator
-        )
-
-        assistant.set_service_url('https://api.us-south.assistant.watson.cloud.ibm.com/instances/e0d095a7-17e0-4a51-b9e9-03b6552dd042')
-
-        response = assistant.message_stateless(
-            assistant_id=IBM_assistant,
-            input={
-                'message_type': 'text',
-                'text': client_query
-            }
-        ).get_result()
-        print(response['output']['generic'])
-        text_for_client = ""
-        for json_msg in response['output']['generic']:
-            if "text" in json_msg and "response_type" in json_msg:
-                text_for_client += json_msg["text"]
-
+    elif current_topic == 4: # admissions
+        text_for_client = handle_admissions(client_query)
 
         #text_for_client = response['output']['generic'][0]['text']
     elif current_topic == 2:
@@ -101,6 +97,30 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> s
         current_topic = -2
 
     return text_for_client, current_topic
+
+
+def handle_admissions(client_query):
+    # PROCESS FOR IBM WATSON
+    authenticator = IAMAuthenticator(IBM_access_key)
+    assistant = AssistantV2(
+        version='2021-06-14',
+        authenticator=authenticator
+    )
+    assistant.set_service_url(
+        'https://api.us-south.assistant.watson.cloud.ibm.com/instances/e0d095a7-17e0-4a51-b9e9-03b6552dd042')
+    response = assistant.message_stateless(
+        assistant_id=IBM_assistant,
+        input={
+            'message_type': 'text',
+            'text': client_query
+        }
+    ).get_result()
+    print(response['output']['generic'])
+    text_for_client = ""
+    for json_msg in response['output']['generic']:
+        if "text" in json_msg and "response_type" in json_msg:
+            text_for_client += json_msg["text"]
+    return text_for_client
 
 
 @app.route("/")
@@ -185,6 +205,9 @@ def getTranscription():
                 group by s.name
                 order by avg_benchmark asc
                 """)
+        rows = db_cursor.fetchall()
+        best_stt_service = rows[0][0]
+        best_stt_benchmark = rows[0][1]
     elif stt_measure == "Exactitud":
         db_cursor.execute( \
             """select s.name, avg(benchmarkValue) as avg_benchmark
@@ -193,6 +216,9 @@ def getTranscription():
                 group by s.name
                 order by avg_benchmark desc
                 """)
+        rows = db_cursor.fetchall()
+        best_stt_service = rows[0][0]
+        best_stt_benchmark = rows[0][1]
     elif stt_measure == "Costo":
         db_cursor.execute( \
             """select s.name, avg(benchmarkValue) as avg_benchmark
@@ -201,10 +227,13 @@ def getTranscription():
                 group by s.name
                 order by avg_benchmark asc
                 """)
+        rows = db_cursor.fetchall()
+        best_stt_service = rows[0][0]
+        best_stt_benchmark = rows[0][1]
+    else:
+        best_stt_service = stt_measure
 
-    rows = db_cursor.fetchall()
-    best_stt_service = rows[0][0]
-    best_stt_benchmark = rows[0][1]
+
     print(f"best stt service for {stt_measure} is {best_stt_service}")
 
     # El famoso conmutador para tts
@@ -260,7 +289,7 @@ def getTranscription():
     print(f"stt latency is {stt_latency}")
 
     print("I'm going to insert the latency of stt into database.")
-
+    LATENCIA_QUERY_STRING = "Insert kksjadhfkj {stt_measure}"
     if stt_measure == "Latencia":
         db_cursor.execute( \
             f"""
@@ -326,7 +355,6 @@ def getTranscription():
     #with open('audio_for_client.mp3', 'r') as f:
     #    return f
 
-    
 
     
 
