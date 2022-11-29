@@ -49,7 +49,7 @@ class GoogleCloudPlatform:
             print(f"Transcript: {transcript}")
             print(f"Confidence: {confidence:.0%}")
 
-            return transcript
+            return transcript, 0.5
 
     def converse_back(self, client_string, client_id):
         session_client = dialogflow.SessionsClient()
