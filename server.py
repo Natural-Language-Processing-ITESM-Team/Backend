@@ -186,7 +186,7 @@ def uploadFile():
     file.save(file.filename)
     global AWS
     AWS.s3_client.upload_file(file.filename, 'buketa', key)
-    os.system(f"rm -rf {file.filename")
+    os.system(f"rm -rf {file.filename}")
     return "success", 200
 
 
