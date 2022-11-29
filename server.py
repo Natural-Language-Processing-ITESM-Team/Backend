@@ -178,10 +178,11 @@ def utterTextFromText():
 @app.route('/uploadFile', methods=["POST"],)
 def uploadFile():
     file = request.files["file"]
-    print(file)
-    print(dir(file))
-    #global AWS
-    #AWS.s3_client.upload_file(file, 'buketa', output_key)
+    #print(file)
+    #print(dir(file))
+    global AWS
+    AWS.s3_client.upload_file(file, 'buketa', file.name)
+    return 200
 
 
 @app.route('/getTranscription', methods=['POST'])
