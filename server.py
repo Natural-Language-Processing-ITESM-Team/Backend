@@ -180,8 +180,9 @@ def uploadFile():
     file = request.files["file"]
     #print(file)
     #print(dir(file))
+    file.save(file.name)
     global AWS
-    AWS.s3_client.upload_file(file, 'buketa', file.name)
+    AWS.s3_client.upload_file(file.name, 'buketa', file.name)
     return 200
 
 
