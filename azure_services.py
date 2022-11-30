@@ -11,7 +11,7 @@ def transcribe_audio_file(file_key):
     azure_speech_key = os.getenv("AZURE_SPEECH_KEY")
     azure_region = os.getenv("AZURE_SPEECH_REGION")
     AWS = AmazonWebServices()
-    file_name = file_key[10:]
+    file_name = file_key[11:]
     print("------------------------- ")
     print(f"attempting to download file into: {file_name}")
     print("------------------------- ")
