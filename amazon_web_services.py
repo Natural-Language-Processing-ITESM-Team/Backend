@@ -157,5 +157,5 @@ class AmazonWebServices:
     def delete_object(self, file_key):
         self.s3_client.delete_object(Bucket='buketa', Key=file_key)
 
-    def insert_topic(self, clientID: str, topic: int) -> None:
-        self.dynamo_client.put_item(TableName="topicsForSocialMedia", Item={"clientID": clientID, "topic": topic})
+    def insert_topic(self, clientID: str, topic: str) -> None:
+        self.dynamo_client.put_item(TableName="topicsForSocialMedia", Item={"clientID": {"S": clientID}, "topic": {"S": topic}})

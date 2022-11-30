@@ -154,7 +154,7 @@ def webhook():
         print(clientPhone, messageBody)
 
         global AWS
-        AWS.insert_topic(clientPhone, 2)
+        AWS.insert_topic(clientPhone, f"2")
         #text_for_client = choose_cloud_converse_back(messageBody, clientPhone, )
         meta_api.respondWhatsapp(clientPhone,"Hola que tal")
         return 'success',200
