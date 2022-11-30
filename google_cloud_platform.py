@@ -97,7 +97,7 @@ class GoogleCloudPlatform:
         self.synthesize_text(input_text, client, AWS, output_key)
         return f"https://buketa.s3.amazonaws.com/{output_key}"
 
-
+"""
 def vocalize(voice_name: str, text_for_client: str):
     language_code = "-".join(voice_name.split("-")[:2])
     text_input = tts.SynthesisInput(text=text)
@@ -118,7 +118,7 @@ def vocalize(voice_name: str, text_for_client: str):
 
 text_to_wav("es-US-Neural2-A", text)
 
-
+"""
 
 
 

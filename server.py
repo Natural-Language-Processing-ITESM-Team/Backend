@@ -402,7 +402,7 @@ def getTranscription():
     print("--------------------------------------------")
     print("I'm going to insert the latency of stt into database.")
     print("--------------------------------------------")
-    
+
     if tts_measure == "Latencia":
         db_cursor.execute( \
             f"""
