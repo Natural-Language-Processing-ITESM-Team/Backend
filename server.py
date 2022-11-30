@@ -426,6 +426,7 @@ def getTranscription():
         audio_response_link = vocalize(text_for_client)
     elif best_stt_service == "AzureTTS":
         # TODO
+        pass
 
 
 
