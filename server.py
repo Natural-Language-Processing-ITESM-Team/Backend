@@ -63,7 +63,7 @@ class DBQueryHandler:
          # holds query
         retur
 """
-def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> str:
+def choose_cloud_converse_back(client_query: str, client_id, current_topic, from_social_media: bool) -> str:
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
 
@@ -97,6 +97,9 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic) -> s
         print("termina conversacion")
         current_topic = -2
 
+    if from_social_media:
+        global AWS
+        AWS.insert_topic(client_id, current_topic)
     return text_for_client, current_topic
 
 
@@ -154,10 +157,12 @@ def webhook():
         print(clientPhone, messageBody)
 
         global AWS
+        current_topic = AWS.dynamo_client.get_item(TableName="topicsForSocialMedia", Key={"clientID": {"S": f"{clientPhone}"}})
+        print(f"current topic is {current_topic}")
         AWS.insert_topic(clientPhone, f"2")
-        #text_for_client = choose_cloud_converse_back(messageBody, clientPhone, )
-        meta_api.respondWhatsapp(clientPhone,"Hola que tal")
-        return 'success',200
+        text_for_client = choose_cloud_converse_back(messageBody, clientPhone, from_social_media=True)
+        meta_api.respondWhatsapp(clientPhone, text_for_client)
+        return 'success', 200
     except Exception as e:
         print(e)
         return "error", 404
@@ -203,7 +208,7 @@ def utterTextFromText():
     client_query = incoming_json["clientQuery"]
     current_topic = incoming_json["topic"]
     print(f"id is {client_id}, topic is {current_topic}, query is {client_query}")
-    text_for_client, current_topic = choose_cloud_converse_back(client_query, client_id, current_topic)
+    text_for_client, current_topic = choose_cloud_converse_back(client_query, client_id, current_topic, from_social_media=False)
     #global current_topic
     return {"text_for_client": text_for_client, "topic": current_topic}
 
@@ -368,7 +373,7 @@ def getTranscription():
         transcript = "transcript empty"
 
 
-    text_for_client, current_topic = choose_cloud_converse_back(transcript, client_id, current_topic)
+    text_for_client, current_topic = choose_cloud_converse_back(transcript, client_id, current_topic, from_social_media=False)
 
 
 
