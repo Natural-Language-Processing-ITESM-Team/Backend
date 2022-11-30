@@ -96,7 +96,7 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
         active_bot = False
         print("termina conversacion")
         current_topic = -2
-    global AWS
+    #global AWS
     if from_social_media:
         AWS.insert_topic(client_id, current_topic)
     return text_for_client, current_topic
