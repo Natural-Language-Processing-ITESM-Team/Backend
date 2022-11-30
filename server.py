@@ -227,6 +227,8 @@ def uploadFile():
 
     key = "transcribe/" + file.filename
     file.save(file.filename)
+    # convert to webm
+    os.system(f'ffmpeg -i "{file.filename}" -vn "{file.filename}"')
     global AWS
     AWS.s3_client.upload_file(file.filename, 'buketa', key)
     os.system(f"rm -rf {file.filename}")
