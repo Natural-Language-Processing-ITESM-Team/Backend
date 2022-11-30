@@ -69,6 +69,9 @@ class DBQueryHandler:
 def choose_cloud_converse_back(client_query: str, client_id, current_topic, from_social_media: bool) -> str:
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
+    print("-------------------------------")
+    print(f"Received topic {current_topic}")
+    print("-------------------------------")
 
 
     if current_topic == -2 or client_query == "":
@@ -98,7 +101,7 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
         text_for_client = AWS.converse_back(client_query, client_id)
         print("chat response is ", text_for_client)
 
-    elif current_topic == Topics.UNCLASSIFIED or current_topic == Topics.SUPPORT or current_topic == Topics.ESPORTS:
+    elif current_topic == -1 or current_topic == 1 or current_topic == 0:
 
         text_for_client = "No he entendido, por favor repite tu petición."
         current_topic = -2
@@ -110,6 +113,10 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
     #global AWS
     if from_social_media:
         AWS.insert_topic(client_id, str(current_topic))
+
+    print("-------------------------------")
+    print(f"Sending out topic {current_topic}")
+    print("-------------------------------")
     return text_for_client, current_topic
 
 
