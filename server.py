@@ -189,10 +189,10 @@ def webhook():
         meta_api.respondWhatsapp(clientPhone, text_for_client)
         return 'success', 200
     except Exception as e:
-        if('object' in request.get_json and 'entry' in request.get_json):
+        if('object' in request.get_json() and 'entry' in request.get_json()):
             return 'success', 200
         else:
-            print(request.get_json)
+            print(request.get_json())
             return 'error', 404
 
 
