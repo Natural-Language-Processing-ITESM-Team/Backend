@@ -5,11 +5,12 @@ from dotenv import load_dotenv
 load_dotenv("secrets.env")
 import random
 
+from amazon_web_services import AmazonWebServices
 
-def transcribe_audio_file(file_key, AWS):
+def transcribe_audio_file(file_key):
     azure_speech_key = os.getenv("AZURE_SPEECH_KEY")
     azure_region = os.getenv("AZURE_SPEECH_REGION")
-
+    AWS = AmazonWebServices()
     file_name = file_key[10:]
     print("------------------------- ")
     print(f"attempting to download file with key: {file_key}")
