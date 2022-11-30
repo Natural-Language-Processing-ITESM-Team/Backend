@@ -80,16 +80,26 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
     print(f"most likely topic is {current_topic}")
     if current_topic == Topics.GRADUATES:
         # PROCESS FOR GOOGLE DIALOGFLOW
+        print("-------------------------------")
+        print("Calling for chatbot Dialogflow")
+        print("-------------------------------")
         text_for_client = GCP.converse_back(client_query, client_id)
     elif current_topic == Topics.ADMISSIONS: # admissions
         text_for_client = handle_admissions(client_query)
-
+        print("-------------------------------")
+        print("Calling for chatbot Watson Assistant")
+        print("-------------------------------")
         #text_for_client = response['output']['generic'][0]['text']
     elif current_topic == Topics.CAREERS:
         # PROCESS FOR AMAZON LEX
+        print("-------------------------------")
+        print("Calling for chatbot Amazon Lex")
+        print("-------------------------------")
         text_for_client = AWS.converse_back(client_query, client_id)
+        print("chat response is ", text_for_client)
 
     elif current_topic == Topics.UNCLASSIFIED or current_topic == Topics.SUPPORT or current_topic == Topics.ESPORTS:
+
         text_for_client = "No he entendido, por favor repite tu petición."
         current_topic = -2
 
