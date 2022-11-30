@@ -80,8 +80,8 @@ class AmazonWebServices:
             if job_status in ['COMPLETED', 'FAILED']:
                 print(f"Job {job_name} is {job_status}.")
                 if job_status == 'COMPLETED':
-                    print(f"Amazon Transcript ready to be downloaded\n")
-                    print(f"\t{job['TranscriptionJob']['Transcript']['TranscriptFileUri']}.")
+                    #print(f"Amazon Transcript ready to be downloaded\n")
+                    #print(f"\t{job['TranscriptionJob']['Transcript']['TranscriptFileUri']}.")
                     response = self.transcribe_client.delete_transcription_job(TranscriptionJobName=job_name)
                 break
             else:
@@ -96,11 +96,13 @@ class AmazonWebServices:
         #print(F"AWS TRANSCRIBE SPEECH TO TEXT {json_data}")
         avg_confidence = 0
 
+        n_items = 0
         for item_no, transcript_item in enumerate(json_data["results"]["items"]):
+            n_items += 1
             #print(f"confidence is {transcript_item['alternatives'][0]['confidence']}")
             avg_confidence += float(transcript_item["alternatives"][0]["confidence"])
 
-        avg_confidence /= (item_no + 1)
+        avg_confidence /= (n_items)
         transcript = json_data["results"]["transcripts"][0]["transcript"]
 
         # delete current transcript from memory
