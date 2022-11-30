@@ -51,6 +51,13 @@ class AmazonWebServices:
                                          aws_session_token=self.__session_token,
                                          region_name=self.__region)
 
+        self.dynamo_client("dynamodb",
+                           aws_access_key_id=self.__access_key,
+                           aws_secret_access_key=self.__secret_access_key,
+                           aws_session_token=self.__session_token,
+                           region_name=self.__region
+        )
+
 
     def transcribe_audio_file(self, job_name, file_key, output_key):
 
@@ -149,3 +156,6 @@ class AmazonWebServices:
 
     def delete_object(self, file_key):
         self.s3_client.delete_object(Bucket='buketa', Key=file_key)
+
+    def insert_topic(self, clientID: str, topic: int) -> None:
+        self.dynamo_client.put_item("topicsForSocialMedia", {"clientID": clientID, "topic": topic})

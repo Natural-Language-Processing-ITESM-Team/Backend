@@ -149,6 +149,10 @@ def webhook():
     messageBody = content['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
     if len(clientPhone) == 11:
         clientPhone = clientPhone[:2] + clientPhone[3:]
+
+    global AWS
+    AWS.insert_topic(clientPhone, 2)
+    #text_for_client = choose_cloud_converse_back(messageBody, clientPhone, )
     meta_api.respondWhatsapp(clientPhone,"Hola que tal")
     return 'success',200
     
