@@ -102,7 +102,10 @@ class AmazonWebServices:
             #print(f"confidence is {transcript_item['alternatives'][0]['confidence']}")
             avg_confidence += float(transcript_item["alternatives"][0]["confidence"])
 
-        avg_confidence /= (n_items)
+        try:
+            avg_confidence /= (n_items)
+        except:  # Division by 0
+            avg_confidence = 0.5
         transcript = json_data["results"]["transcripts"][0]["transcript"]
 
         # delete current transcript from memory
