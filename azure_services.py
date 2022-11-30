@@ -11,7 +11,9 @@ def transcribe_audio_file(file_key, AWS):
     azure_region = os.getenv("AZURE_SPEECH_REGION")
 
     file_name = file_key[10:]
-
+    print("------------------------- ")
+    print(f"attempting to download file with key: {file_key}")
+    print("------------------------- ")
     AWS.s3_client.download_file("buketa", file_key, file_name)
 
     os.system(f'ffmpeg -i "{file_name}" -vn "{file_name[:-5] + ".wav"}"')
