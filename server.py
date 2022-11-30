@@ -328,6 +328,9 @@ def getTranscription():
                 group by s.name
                 order by avg_benchmark asc
                 """)
+        rows = db_cursor.fetchall()
+        best_tts_service = rows[0][0]
+        best_tts_benchmark = rows[0][1]
     elif tts_measure == "Costo":
         db_cursor.execute( \
             """select s.name, avg(benchmarkValue) as avg_benchmark
@@ -336,10 +339,13 @@ def getTranscription():
                 group by s.name
                 order by avg_benchmark asc
                 """)
+        rows = db_cursor.fetchall()
+        best_tts_service = rows[0][0]
+        best_tts_benchmark = rows[0][1]
+    else:
+        best_tts_service = tts_measure
 
-    rows = db_cursor.fetchall()
-    best_tts_service = rows[0][0]
-    best_tts_benchmark = rows[0][1]
+
     print(f"best stt service for {tts_measure} is {best_tts_service}")
 
 
@@ -418,6 +424,10 @@ def getTranscription():
         audio_response_link = GCP.vocalize(text_for_client, AWS)
     elif best_tts_service == "WatsonTTS":
         audio_response_link = vocalize(text_for_client)
+    elif best_stt_service == "AzureTTS":
+        # TODO
+
+
 
     tts_latency = (time.time() - tts_start_time) * 1000
 

@@ -24,12 +24,14 @@ def transcribe_audio_file(file_key):
 
     global AWS
 
-    # Download audio file from s3.
-    AWS.s3_client.download_file("buketa", file_key, "client.webm")
+    file_name = file_key[11:]
+    AWS.s3_client.download_file("buketa", file_key, file_name)
 
-    with open("client.webm", 'rb') as f:
+    with open(file_name, 'rb') as f:
         res = stt.recognize(audio=f, content_type='audio/webm', model='es-MX_NarrowbandModel',
                             inactivity_timeout=-1).get_result()
+    os.system(f"rm -rf {file_name}")
+
     #print(F"THE WATSON SPEECH TO TEXT {res}")
     transcript = res['results'][0]['alternatives'][0]['transcript']
     confidence = res['results'][0]['alternatives'][0]['confidence']
