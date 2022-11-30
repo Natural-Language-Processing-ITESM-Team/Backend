@@ -156,9 +156,16 @@ def webhook():
         print(clientPhone, messageBody)
 
         global AWS
-        current_topic = AWS.dynamo_client.get_item(TableName="topicsForSocialMedia", Key={"clientID": {"S": f"{clientPhone}"}})
-        print(f"current topic is {current_topic}")
-        AWS.insert_topic(clientPhone, f"2")
+        topic_for_client = AWS.dynamo_client.get_item(TableName="topicsForSocialMedia", Key={"clientID": {"S": f"{clientPhone}"}})
+
+
+        if "Item" not in topic_for_client:
+
+            AWS.insert_topic(clientPhone, f"-2")
+            current_topic = -2
+        else:
+            current_topic = int(topic_for_client["Item"]["topic"]["S"])
+        print(f"current_topic is {current_topic})
         text_for_client = choose_cloud_converse_back(messageBody, clientPhone, from_social_media=True)
         meta_api.respondWhatsapp(clientPhone, text_for_client)
         return 'success', 200
