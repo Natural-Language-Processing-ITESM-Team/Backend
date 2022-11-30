@@ -165,7 +165,7 @@ def webhook():
             current_topic = -2
         else:
             current_topic = int(topic_for_client["Item"]["topic"]["S"])
-        print(f"current_topic is {current_topic})
+        print(f"current_topic is {current_topic}")
         text_for_client = choose_cloud_converse_back(messageBody, clientPhone, from_social_media=True)
         meta_api.respondWhatsapp(clientPhone, text_for_client)
         return 'success', 200
