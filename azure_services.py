@@ -10,9 +10,11 @@ def transcribe_audio_file(file_key, AWS):
     azure_speech_key = os.getenv("AZURE_SPEECH_KEY")
     azure_region = os.getenv("AZURE_SPEECH_REGION")
 
-    AWS.s3_client.download_file("buketa", file_key, "client.webm")
+    file_name = file_key[10:]
 
-    os.system('ffmpeg -i "client.webm" -vn "client.wav"')
+    AWS.s3_client.download_file("buketa", file_key, file_name)
+
+    os.system(f'ffmpeg -i "{file_name}" -vn "{file_name[:-5] + ".wav"}"')
 
 
     # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
@@ -20,13 +22,14 @@ def transcribe_audio_file(file_key, AWS):
                                            region=azure_region)
     speech_config.speech_recognition_language = "es-MX"
 
-    audio_config = speechsdk.audio.AudioConfig(filename="client.wav")
+    audio_config = speechsdk.audio.AudioConfig(filename=file_name[:-5] + ".wav")
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
 
     speech_recognition_result = speech_recognizer.recognize_once_async().get()
 
-    os.system('rm -rf "client.webm"')
-    os.system('rm -rf "client.wav"')
+    os.system(f'rm -rf "{file_name}')
+    os.system(f'rm -rf "{file_name[:-5] + ".wav"}"')
+    print("AZURE TRANSCRIPTION COMPLETE")
     print(F"AZURE SPEECH TO TEXT RESPONSE {speech_recognition_result}")
     if speech_recognition_result.reason == speechsdk.ResultReason.RecognizedSpeech:
         return speech_recognition_result.text, 0.5

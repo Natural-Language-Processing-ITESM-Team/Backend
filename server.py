@@ -343,23 +343,24 @@ def getTranscription():
         transcript, confidence = transcribe_audio_file(file_key)
     elif best_stt_service == "AzureSTT":
         transcript, confidence = azure_transcribe_audio_file(file_key, AWS)
-
+    print("--------------------------------------------")
     print(f"prompt {transcript} confidence {confidence}")
+    print("--------------------------------------------")
 
     stt_latency = (time.time() - stt_start_time) * 1000
-    print(f"stt latency is {stt_latency}")
 
+    print("--------------------------------------------")
+    print(f"stt latency is {stt_latency}")
+    print("--------------------------------------------")
+
+    print("--------------------------------------------")
     print("I'm going to insert the latency of stt into database.")
+    print("--------------------------------------------")
+
     LATENCIA_QUERY_STRING = "Insert kksjadhfkj {stt_measure}"
     if stt_measure == "Latencia":
         db_cursor.execute( \
             f"""
-            INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
-            VALUES ((SELECT metricId FROM Metrics WHERE name = "{stt_measure}"), 
-                    (SELECT STTServiceId FROM STTServices WHERE name = "{best_stt_service}"), 
-                    {stt_latency})
-            """)
-        print(f"""
             INSERT INTO STTBenchmarks (metricId, STTServiceId, benchmarkValue) 
             VALUES ((SELECT metricId FROM Metrics WHERE name = "{stt_measure}"), 
                     (SELECT STTServiceId FROM STTServices WHERE name = "{best_stt_service}"), 
@@ -381,9 +382,10 @@ def getTranscription():
 
     text_for_client, current_topic = choose_cloud_converse_back(transcript, client_id, current_topic, from_social_media=False)
 
+    print("--------------------------------------------")
+    print(f"chatbot reponse for client {text_for_client}")
+    print("--------------------------------------------")
 
-
-    print(f"response {text_for_client}")
     #best_tts_service = "WatsonTTS"
     tts_start_time = time.time()
     if best_tts_service == "Polly":
@@ -397,6 +399,10 @@ def getTranscription():
 
     tts_latency = (time.time() - tts_start_time) * 1000
 
+    print("--------------------------------------------")
+    print("I'm going to insert the latency of stt into database.")
+    print("--------------------------------------------")
+    
     if tts_measure == "Latencia":
         db_cursor.execute( \
             f"""

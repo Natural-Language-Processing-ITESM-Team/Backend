@@ -73,6 +73,9 @@ class GoogleCloudPlatform:
         return text_for_client
 
     def synthesize_text(self, input_text, client, AWS, output_key):
+
+
+
         voice = texttospeech.VoiceSelectionParams(language_code="es-US", name="es-ES-Standard-A ",
                                                   ssml_gender=texttospeech.SsmlVoiceGender.FEMALE, )
         audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
@@ -95,6 +98,25 @@ class GoogleCloudPlatform:
         return f"https://buketa.s3.amazonaws.com/{output_key}"
 
 
+def vocalize(voice_name: str, text_for_client: str):
+    language_code = "-".join(voice_name.split("-")[:2])
+    text_input = tts.SynthesisInput(text=text)
+    voice_params = tts.VoiceSelectionParams(
+        language_code=language_code, name=voice_name
+    )
+    audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
+
+    client = tts.TextToSpeechClient()
+    response = client.synthesize_speech(
+        input=text_input, voice=voice_params, audio_config=audio_config
+    )
+
+    filename = f"{language_code}.wav"
+    with open(filename, "wb") as out:
+        out.write(response.audio_content)
+        print(f'Generated speech saved to "{filename}"')
+
+text_to_wav("es-US-Neural2-A", text)
 
 
 
