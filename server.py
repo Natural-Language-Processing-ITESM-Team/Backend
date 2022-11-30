@@ -49,9 +49,12 @@ GCP = GoogleCloudPlatform()
 from enum import Enum
 
 class Topics(Enum):
-   GREET = -1
-   BLAH = 2
-
+    ESPORTS = 0
+    SUPPORT = 1
+    CAREERS = 2
+    GRADUATES = 3
+    ADMISSIONS = 4
+    UNCLASSIFIED = -1
 
 
 """
@@ -67,8 +70,6 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
     # CHOOSE WITH THE MODEL
     modelo = BERTopic.load("BERTopicv1")
 
-    #global active_bot
-    #global current_topic
 
     if current_topic == -2 or client_query == "":
         model_inference = modelo.find_topics(client_query)
@@ -77,18 +78,18 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
 
     # TODO if model_inference is topic 1 then lex else google algo así.
     print(f"most likely topic is {current_topic}")
-    if current_topic == 3:
+    if current_topic == Topics.GRADUATES:
         # PROCESS FOR GOOGLE DIALOGFLOW
         text_for_client = GCP.converse_back(client_query, client_id)
-    elif current_topic == 4: # admissions
+    elif current_topic == Topics.ADMISSIONS: # admissions
         text_for_client = handle_admissions(client_query)
 
         #text_for_client = response['output']['generic'][0]['text']
-    elif current_topic == 2:
+    elif current_topic == Topics.CAREERS:
         # PROCESS FOR AMAZON LEX
         text_for_client = AWS.converse_back(client_query, client_id)
 
-    elif current_topic == -1:
+    elif current_topic == Topics.UNCLASSIFIED or current_topic == Topics.SUPPORT or current_topic == Topics.ESPORTS:
         text_for_client = "No he entendido, por favor repite tu petición."
         current_topic = -2
 
