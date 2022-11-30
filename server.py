@@ -166,6 +166,7 @@ def hello_world():
 def webhook():
     try:
         content = request.get_json()
+        print(content)
         clientPhone = content['entry'][0]['changes'][0]['value']['contacts'][0]['wa_id']
         messageBody = content['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
         if len(clientPhone) == 13:
