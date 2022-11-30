@@ -98,7 +98,7 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
         current_topic = -2
     #global AWS
     if from_social_media:
-        AWS.insert_topic(client_id, current_topic)
+        AWS.insert_topic(client_id, str(current_topic))
     return text_for_client, current_topic
 
 
