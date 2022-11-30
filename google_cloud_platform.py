@@ -21,16 +21,18 @@ class GoogleCloudPlatform:
         self.SESSION_ID = 'me'
 
     def transcribe_audio_file(self, file_key, AWS):
-        file_uri = "s3://buketa/" + file_key
+        #file_uri = "s3://buketa/" + file_key
         client = speech.SpeechClient()
 
         # Download audio file from s3.
-        print(f"in google stt, key is {file_key}")
-        AWS.s3_client.download_file("buketa", file_key, "client.webm")
+        #print(f"in google stt, key is {file_key}")
+
+        file_name = file_key[11:]
+        AWS.s3_client.download_file("buketa", file_key, file_name)
         # convert to wav.
         #os.system('ffmpeg -i "client.webm" -vn "client.wav"')
 
-        with io.open("client.webm", "rb") as audio_file:
+        with io.open(file_name, "rb") as audio_file:
             content = audio_file.read()
 
         audio = speech.RecognitionAudio(content=content)
@@ -50,7 +52,7 @@ class GoogleCloudPlatform:
             print(f"Transcript: {transcript}")
             print(f"Confidence: {confidence:.0%}")
 
-            return transcript, 0.5
+            return transcript, confidence
         return "", 0.5
 
     def converse_back(self, client_string, client_id):
