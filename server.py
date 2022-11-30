@@ -147,6 +147,8 @@ def webhook():
     content = request.get_json()
     clientPhone = content['entry'][0]['changes'][0]['value']['contacts'][0]['wa_id']
     messageBody = content['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
+    if len(clientPhone) == 11:
+        clientPhone = clientPhone[:2] + clientPhone[3:]
     meta_api.respondWhatsapp(clientPhone,"Hola que tal")
     return 'success',200
     
