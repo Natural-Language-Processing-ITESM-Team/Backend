@@ -161,7 +161,7 @@ def webhookVerification():
             return 'success', 200
         elif(mode == 'subscribe' and token == WHATSAPP_TOKEN):
             print('Webhook verified')
-            return 'success', 200
+            return challenge
     return 'error', 403
 
 @app.route('/utterTextFromText', methods=["POST"])
