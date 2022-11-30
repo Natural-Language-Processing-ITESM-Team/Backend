@@ -80,8 +80,8 @@ class AmazonWebServices:
             if job_status in ['COMPLETED', 'FAILED']:
                 print(f"Job {job_name} is {job_status}.")
                 if job_status == 'COMPLETED':
-                    #print(f"Amazon Transcript ready to be downloaded\n")
-                    #print(f"\t{job['TranscriptionJob']['Transcript']['TranscriptFileUri']}.")
+                    print(f"Amazon Transcript ready to be downloaded\n")
+                    print(f"\t{job['TranscriptionJob']['Transcript']['TranscriptFileUri']}.")
                     response = self.transcribe_client.delete_transcription_job(TranscriptionJobName=job_name)
                 break
             else:
