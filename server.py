@@ -145,8 +145,11 @@ def sendMessengerTest():
 @app.route("/webhook",methods=['POST'])
 def webhook():
     content = request.get_json()
-    print(content)
+    clientPhone = content['entry'][0]['changes'][0]['value']['contacts'][0]['wa_id']
+    messageBody = content['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
+    print(clientPhone,messageBody, sep="\n")
     return 'success',200
+    
 
 @app.route("/webhook",methods=["GET"])
 def webhookVerification():
@@ -156,13 +159,28 @@ def webhookVerification():
         token = request.args.get('hub.verify_token')
         challenge = request.args.get('hub.challenge')
     if(mode and token):
-        if(mode == 'subscribe' and token == TOKEN):
-            print('Webhook verified')
-            return 'success', 200
-        elif(mode == 'subscribe' and token == WHATSAPP_TOKEN):
+        if(mode == 'subscribe' and token == WHATSAPP_TOKEN):
             print('Webhook verified')
             return challenge
     return 'error', 403
+
+@app.route("/messengerWebhook", methods=['GET','POST'])
+def messengerWebhook():
+    if request.method == 'GET':
+        mode = request.args.get('hub.mode')
+        token = request.args.get('hub.token')
+        if(not token):
+            token = request.args.get('hub.verify_token')
+            challenge = request.args.get('hub.challenge')
+        if(mode and token):
+            if(mode == 'subscribe' and token == TOKEN):
+                print('Webhook verified')
+                return challenge
+        return 'error', 403
+    else:
+        content = request.get_json()
+        print(content)
+        return 'success',200
 
 @app.route('/utterTextFromText', methods=["POST"])
 def utterTextFromText():
