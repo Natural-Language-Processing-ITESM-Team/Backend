@@ -384,7 +384,7 @@ def getTranscription():
 
 
     print(f"response {text_for_client}")
-    best_tts_service = "WatsonTTS"
+    #best_tts_service = "WatsonTTS"
     tts_start_time = time.time()
     if best_tts_service == "Polly":
         # AWS TTS
