@@ -13,7 +13,7 @@ def transcribe_audio_file(file_key):
     AWS = AmazonWebServices()
     file_name = file_key[10:]
     print("------------------------- ")
-    print(f"attempting to download file with key: {file_key}")
+    print(f"attempting to download file into: {file_name}")
     print("------------------------- ")
     AWS.s3_client.download_file("buketa", file_key, file_name)
 
