@@ -25,6 +25,7 @@ class GoogleCloudPlatform:
         client = speech.SpeechClient()
 
         # Download audio file from s3.
+        print(f"in google stt, key is {file_key}")
         AWS.s3_client.download_file("buketa", file_key, "client.webm")
         # convert to wav.
         #os.system('ffmpeg -i "client.webm" -vn "client.wav"')
