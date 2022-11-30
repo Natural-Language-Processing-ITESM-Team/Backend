@@ -128,26 +128,26 @@ def handle_admissions(client_query):
 def hello_world():
     return "<p>Hello, World!</p>"
 
-@app.route("/sendWhatsappTest", methods=['GET'])
-def sendWhatsappTest():
-    target_number = request.args.get('target_number')
-    message = request.args.get('message')
-    meta_api.respondWhatsapp(target_number,message)
-    return 'success', 200
+# @app.route("/sendWhatsappTest", methods=['GET'])
+# def sendWhatsappTest():
+#     target_number = request.args.get('target_number')
+#     message = request.args.get('message')
+#     meta_api.respondWhatsapp(target_number,message)
+#     return 'success', 200
 
-@app.route("/sendMessengerTest", methods=['GET'])
-def sendMessengerTest():
-    target_PSID = request.args.get('PSID')
-    message = request.args.get('message')
-    meta_api.respondMessenger(target_PSID, message)
-    return 'success', 200
+# @app.route("/sendMessengerTest", methods=['GET'])
+# def sendMessengerTest():
+#     target_PSID = request.args.get('PSID')
+#     message = request.args.get('message')
+#     meta_api.respondMessenger(target_PSID, message)
+#     return 'success', 200
 
 @app.route("/webhook",methods=['POST'])
 def webhook():
     content = request.get_json()
     clientPhone = content['entry'][0]['changes'][0]['value']['contacts'][0]['wa_id']
     messageBody = content['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
-    print(clientPhone,messageBody, sep="\n")
+    meta_api.respondWhatsapp(clientPhone,"Hola que tal")
     return 'success',200
     
 
