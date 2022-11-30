@@ -51,7 +51,7 @@ class AmazonWebServices:
                                          aws_session_token=self.__session_token,
                                          region_name=self.__region)
 
-        self.client("dynamodb",
+        self.dynamo_client = boto3.client("dynamodb",
                            aws_access_key_id=self.__access_key,
                            aws_secret_access_key=self.__secret_access_key,
                            aws_session_token=self.__session_token,
