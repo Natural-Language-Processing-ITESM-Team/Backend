@@ -232,7 +232,7 @@ def messengerWebhook():
             return 'error', 404
 
 
-app.route("/getUnclassifiedQueries", methods=["GET"])
+@app.route("/getUnclassifiedQueries", methods=["GET"])
 def getUnclassifiedQueries():
     global db_cursor
     db_cursor.execute( \
@@ -243,7 +243,7 @@ def getUnclassifiedQueries():
     print(unclassified_queries)
     return "success", 200
 
-app.route("/updateCosts", methods=["POST"])
+@app.route("/updateCosts", methods=["POST"])
 def getUnclassifiedQueries():
     incoming_json = request.get_json()
     modality = incoming_json["modality"]  #STT OR TTS
