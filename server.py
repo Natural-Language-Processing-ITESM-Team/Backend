@@ -412,6 +412,7 @@ def getTranscription():
         response_map = json.loads(req.text)
         weird_transcript = response_map["transcripcion"]
         transcript = unicodedata.normalize("NFKD", weird_transcript).encode("ascii", "ignore")
+        transcript = str(transcript)
         confidence = 0.5
 
     print("--------------------------------------------")
