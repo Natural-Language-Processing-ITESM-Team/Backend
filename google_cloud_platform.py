@@ -12,6 +12,7 @@ import dialogflow
 from google.api_core.exceptions import InvalidArgument
 from google.cloud import speech_v1 as speech
 from google.cloud import texttospeech
+import google.cloud.texttospeech as tts
 
 class GoogleCloudPlatform:
     def __init__(self):
@@ -74,53 +75,30 @@ class GoogleCloudPlatform:
         #text_for_client = response.query_result.fulfillment_text
         return text_for_client
 
-    def synthesize_text(self, input_text, client, AWS, output_key):
-
-
-
-        voice = texttospeech.VoiceSelectionParams(language_code="es-US", name="es-ES-Standard-A ",
-                                                  ssml_gender=texttospeech.SsmlVoiceGender.FEMALE, )
-        audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
-        response = client.synthesize_speech(request={"input": input_text, "voice": voice, "audio_config": audio_config})
-        with open("output.mp3", "wb") as out:
-            out.write(response.audio_content)
-            #out_file_key = file_key[:-5] + str(contador) + ".mp3"
-            AWS.s3_client.upload_file('output.mp3', 'buketa', output_key)
-
-
-        # print('Audio content written to file "output.mp3"')
-
     def vocalize(self, text_for_client, AWS):
-        client = texttospeech.TextToSpeechClient()
-        input_text = texttospeech.SynthesisInput(text=text_for_client)
+        language_code = "-".join('es-US-Neural2-A'.split("-")[:2])
+        text_input = tts.SynthesisInput(text=text_for_client)
+        voice_params = tts.VoiceSelectionParams(
+            language_code=language_code, name='es-US-Neural2-A'
+        )
+        audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
 
-        output_key = str(random.random())[2:] + ".mp3"
+        client = tts.TextToSpeechClient()
+        response = client.synthesize_speech(
+            input=text_input, voice=voice_params, audio_config=audio_config
+        )
 
-        self.synthesize_text(input_text, client, AWS, output_key)
+        filename = str(random.random())[2:] + ".wav"
+
+        with open(filename, "wb") as out:
+            out.write(response.audio_content)
+            #print(f'Generated speech saved to "{filename}"')
+        output_key = "transcribe/" + filename
+        AWS.s3_client.upload_file(filename, 'buketa', output_key)
+
         return f"https://buketa.s3.amazonaws.com/{output_key}"
 
-"""
-def vocalize(voice_name: str, text_for_client: str):
-    language_code = "-".join(voice_name.split("-")[:2])
-    text_input = tts.SynthesisInput(text=text)
-    voice_params = tts.VoiceSelectionParams(
-        language_code=language_code, name=voice_name
-    )
-    audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
 
-    client = tts.TextToSpeechClient()
-    response = client.synthesize_speech(
-        input=text_input, voice=voice_params, audio_config=audio_config
-    )
-
-    filename = f"{language_code}.wav"
-    with open(filename, "wb") as out:
-        out.write(response.audio_content)
-        print(f'Generated speech saved to "{filename}"')
-
-text_to_wav("es-US-Neural2-A", text)
-
-"""
 
 
 
