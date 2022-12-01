@@ -1,6 +1,7 @@
 import os
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
+import system
 
 load_dotenv("secrets.env")
 import random
@@ -55,16 +56,16 @@ def vocalize(text_for_client, AWS):
 
     #AWS.s3_client.download_file("buketa", file_key, "client.webm")
 
-    os.system('ffmpeg -i "client.webm" -vn "client.wav"')
+    #os.system('ffmpeg -i "client.webm" -vn "client.wav"')
     # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
     speech_config = speechsdk.SpeechConfig(subscription=azure_speech_key,
                                            region=azure_region)
 
-    output_key = str(random.random())[2:] + ".wav"
+    filename = str(random.random())[2:] + ".wav"
 
 
     # audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
-    audio_config = speechsdk.audio.AudioOutputConfig(filename=output_key)
+    audio_config = speechsdk.audio.AudioOutputConfig(filename=filename)
 
     # The language of the voice that speaks.
     speech_config.speech_synthesis_voice_name = 'es-MX-JorgeNeural'
@@ -74,9 +75,11 @@ def vocalize(text_for_client, AWS):
 
     speech_synthesis_result = speech_synthesizer.speak_text_async(text_for_client).get()
 
-    AWS.s3_client.upload_file('output.mp3', 'buketa', output_key)
+    AWS.s3_client.upload_file('output.mp3', 'buketa', filename)
 
-    return f"https://buketa.s3.amazonaws.com/{output_key}"
+    system.os(f"rm -rf {filename}")
+
+    return f"https://buketa.s3.amazonaws.com/{'transcribe' + filename}"
 
     if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
         print("Speech synthesized for text [{}]".format(text))
