@@ -20,6 +20,7 @@ from azure_services import transcribe_audio_file as azure_transcribe_audio_file
 # Local related imports
 from amazon_web_services import AmazonWebServices
 from google_cloud_platform import GoogleCloudPlatform
+from azure_services import vocalize as azure_vocalize
 
 db_connection   = pymysql.connect( \
     host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
@@ -461,8 +462,7 @@ def getTranscription():
     elif best_tts_service == "WatsonTTS":
         audio_response_link = vocalize(text_for_client)
     elif best_stt_service == "AzureTTS":
-        # TODO
-        pass
+        azure_vocalize(text_for_client)
 
 
 
