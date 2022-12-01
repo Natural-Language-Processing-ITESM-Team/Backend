@@ -228,7 +228,17 @@ def messengerWebhook():
             return 'error', 404
 
 
-    
+app.route("/getUnclassifiedQueries", methods=["GET"])
+def getUnclassifiedQueries():
+    global db_cursor
+    db_cursor.execute( \
+        """
+        SELECT * FROM UnclassifiedQueries;
+        """)
+    unclassified_queries = db_cursor.fetchall()
+    print(unclassified_queries)
+    return "success", 200
+
 
 @app.route("/webhook",methods=["GET"])
 def webhookVerification():

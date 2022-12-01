@@ -87,7 +87,19 @@ db_cursor.execute( \
     
     """)
 
+db_cursor.execute( \
+    """
+    CREATE TABLE UnclassifiedQueries(queryID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                                     query VARCHAR(255) NOT NULL
+    )
+    """)
+
 print("voy a insertar xd")
+
+db_cursor.execute( \
+    """
+    INSERT INTO UnclassifiedQueries (query) VALUES ("prueba de query no clasificada")
+    """)
 
 db_cursor.execute( \
     """
