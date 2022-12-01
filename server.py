@@ -462,7 +462,7 @@ def getTranscription():
     elif best_tts_service == "WatsonTTS":
         audio_response_link = vocalize(text_for_client)
     elif best_stt_service == "AzureTTS":
-        azure_vocalize(text_for_client)
+        audio_response_link = azure_vocalize(text_for_client)
 
 
 
