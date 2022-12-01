@@ -249,9 +249,15 @@ def getUnclassifiedQueries():
     global db_cursor
     db_cursor.execute( \
         f"""
-        INSERT INTO {modality}Benchmarks (metricId, STTServiceId, benchmarkValue) 
+            DELETE FROM {modality}Benchmarks as benchtable WHERE 
+            benchtable.metricId = (SELECT metricId FROM Metrics WHERE name = "Costo")
+            AND benchtable.{modality}ServiceId = (SELECT {modality}ServiceId FROM {modality}Services WHERE name = "{service}")
+        """)
+    db_cursor.execute( \
+        f"""
+        INSERT INTO {modality}Benchmarks (metricId, {modality}ServiceId, benchmarkValue) 
         VALUES ((SELECT metricId FROM Metrics WHERE name = "Costo"), 
-                (SELECT STTServiceId FROM STTServices WHERE name = "{service}"), 
+                (SELECT {modality}ServiceId FROM {modality}Services WHERE name = "{service}"), 
                 {cost_value})
         """)
     return "success", 200
