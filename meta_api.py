@@ -18,7 +18,7 @@ def respondWhatsapp(clientNumber, message):
 
 def respondMessenger(PSID,message):
     url = f'https://graph.facebook.com/v15.0/me/messages?access_token={PAGE_ACCESS_TOKEN}'
-    json = {"messaging_type": "RESPONSE","recipient":{"id":str(PSID)},"message":{"text":message}}
+    json = {"messaging_type": "RESPONSE","recipient":{"id":str(PSID)},"message":{"text":"hole"}}
     
     req = requests.post(url, json=json)
     print(req.text)
