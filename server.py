@@ -251,7 +251,6 @@ def updateCosts():
     cost_value = int(incoming_json["costValue"])
 
     print(modality, service, cost_value)
-    return 200
 
     global db_cursor
     db_cursor.execute( \
