@@ -79,7 +79,7 @@ def vocalize(text_for_client, AWS):
 
     os.system(f"rm -rf {filename}")
 
-    return f"https://buketa.s3.amazonaws.com/{'transcribe' + filename}"
+    return f"https://buketa.s3.amazonaws.com/{'transcribe/' + filename}"
 
     if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
         print("Speech synthesized for text [{}]".format(text))
