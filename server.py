@@ -403,9 +403,9 @@ def getTranscription():
     elif best_stt_service == "AzureSTT":
         transcript, confidence = azure_transcribe_audio_file(file_key)
     elif best_stt_service == "NvidiaSTT":
-        url = 'https://709f-148-241-64-15.ngrok.io//Nvidia'
+        url = 'https://709f-148-241-64-15.ngrok.io/Nvidia'
         headers = {'Content-Type': 'application/json'}
-        json = {"data": {"audio_response_link": "s3://buketa/" + file_key}}
+        json = {"data": {"audio_response_link": f"https://buketa.s3.amazonaws.com/{file_key}"}}
         req = requests.post(url, headers=headers, json=json)
         print(req.text)
     print("--------------------------------------------")
