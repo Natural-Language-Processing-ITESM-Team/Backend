@@ -240,8 +240,8 @@ def getUnclassifiedQueries():
         SELECT * FROM UnclassifiedQueries;
         """)
     unclassified_queries = db_cursor.fetchall()
-    print(unclassified_queries)
-    return "success", 200
+
+    return {"unclassified_queries": unclassified_queries}
 
 @app.route("/updateCosts", methods=["POST"])
 def updateCosts():
