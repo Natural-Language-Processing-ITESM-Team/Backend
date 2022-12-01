@@ -75,7 +75,7 @@ def vocalize(text_for_client, AWS):
 
     speech_synthesis_result = speech_synthesizer.speak_text_async(text_for_client).get()
 
-    AWS.s3_client.upload_file('output.mp3', 'buketa', filename)
+    AWS.s3_client.upload_file(filename, 'buketa', f"transcribe/{filename}")
 
     os.system(f"rm -rf {filename}")
 
