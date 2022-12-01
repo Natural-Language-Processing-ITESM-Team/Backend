@@ -105,7 +105,11 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
         print("chat response is ", text_for_client)
 
     elif current_topic == -1 or current_topic == 1 or current_topic == 0:
-
+        if current_topic == -1:
+            db_cursor.execute( \
+                f"""
+                INSERT INTO UnclassifiedQueries (query) VALUES ({client_query})
+                """)
         text_for_client = "No he entendido, por favor repite tu petición."
         current_topic = -2
 
