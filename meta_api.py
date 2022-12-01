@@ -18,8 +18,8 @@ def respondWhatsapp(clientNumber, message):
 
 def respondMessenger(PSID,message):
     print("message before", message)
-    message = message.encode("UTF-8", "ignore")
-    print("message after", message)
+    #message = message.encode("UTF-8", "ignore")
+    #print("message after", message)
     url = f'https://graph.facebook.com/v15.0/me/messages?access_token={PAGE_ACCESS_TOKEN}'
     json = {"messaging_type": "RESPONSE","recipient":{"id":str(PSID)},"message":{"text":message}}
     
