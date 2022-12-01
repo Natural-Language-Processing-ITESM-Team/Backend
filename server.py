@@ -195,13 +195,13 @@ def webhook():
             return 'error', 404
 
 @app.route("/messengerWebhook",methods=['POST'])
-def webhook():
+def messengerWebhook():
     try:
         content = request.get_json()
         PSID = 1234
         messageBody = "Hello"
         print(content)
-        
+
         #print(PSID, messageBody)
 
         # global AWS
