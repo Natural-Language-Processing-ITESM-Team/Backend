@@ -218,7 +218,7 @@ def messengerWebhook():
             current_topic = int(topic_for_client["Item"]["topic"]["S"])
         print(f"current_topic is {current_topic}")
         text_for_client = choose_cloud_converse_back(messageBody, PSID, current_topic, from_social_media=True)
-        meta_api.respondMessenger(PSID, text_for_client)
+        meta_api.respondMessenger(PSID, text_for_client.encode("UTF-8", "ignore"))
         return 'success', 200
     except Exception as e:
         if('object' in request.get_json() and 'entry' in request.get_json()):
