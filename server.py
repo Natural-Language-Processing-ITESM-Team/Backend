@@ -320,6 +320,7 @@ def uploadFile():
     os.system(f"mv {'xd' + file.filename} {file.filename}")
     global AWS
     AWS.s3_client.upload_file(file.filename, 'buketa', key)
+    print(AWS._access_key)
     os.system(f"rm -rf {file.filename}")
     return "success", 200
 
