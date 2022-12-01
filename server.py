@@ -409,8 +409,8 @@ def getTranscription():
         headers = {'Content-Type': 'application/json'}
         json = {"data": {"audio_response_link": f"https://buketa.s3.amazonaws.com/{file_key}"}}
         req = requests.post(url, headers=headers, json=json)
-        response_map = json.loads(req)
-        weird_transcript = response_map["transcripcion"]
+        #response_map = json.loads(req)
+        weird_transcript = req.text["transcripcion"]
         transcript = unicodedata.normalize("NFKD", weird_transcript).encode("ascii", "ignore")
         confidence = 0.5
 
