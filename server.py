@@ -407,7 +407,8 @@ def getTranscription():
         headers = {'Content-Type': 'application/json'}
         json = {"data": {"audio_response_link": f"https://buketa.s3.amazonaws.com/{file_key}"}}
         req = requests.post(url, headers=headers, json=json)
-        print(req.text)
+        transcript, confidence = req.text["transcripcion"], 0.5
+
     print("--------------------------------------------")
     print(f"prompt {transcript} confidence {confidence}")
     print("--------------------------------------------")
