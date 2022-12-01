@@ -407,10 +407,10 @@ def getTranscription():
     elif best_stt_service == "NvidiaSTT":
         url = 'https://709f-148-241-64-15.ngrok.io/Nvidia'
         headers = {'Content-Type': 'application/json'}
-        json = {"data": {"audio_response_link": f"https://buketa.s3.amazonaws.com/{file_key}"}}
-        req = requests.post(url, headers=headers, json=json)
-        response_map = json.loads(str(req.text))
-        weird_transcript = req.text["transcripcion"]
+        json_info = {"data": {"audio_response_link": f"https://buketa.s3.amazonaws.com/{file_key}"}}
+        req = requests.post(url, headers=headers, json=json_info)
+        response_map = json.loads(req.text)
+        weird_transcript = response_map["transcripcion"]
         transcript = unicodedata.normalize("NFKD", weird_transcript).encode("ascii", "ignore")
         confidence = 0.5
 
