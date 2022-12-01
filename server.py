@@ -244,7 +244,7 @@ def getUnclassifiedQueries():
     return "success", 200
 
 @app.route("/updateCosts", methods=["POST"])
-def getUnclassifiedQueries():
+def updateCosts():
     incoming_json = request.get_json()
     modality = incoming_json["modality"]  #STT OR TTS
     service = incoming_json["service"]
