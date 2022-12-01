@@ -42,7 +42,6 @@ IBM_access_key = os.getenv('IAM_AUTHENTICATOR')
 IBM_assistant = os.getenv('ASSISTANT_ID')
 
 TOKEN = os.getenv('TOKEN')
-WHATSAPP_TOKEN = os.getenv('WHATSAPP_TOKEN')
 
 app = Flask(__name__)
 CORS(app)
@@ -240,7 +239,7 @@ def webhookVerification():
         token = request.args.get('hub.verify_token')
         challenge = request.args.get('hub.challenge')
     if(mode and token):
-        if(mode == 'subscribe' and token == WHATSAPP_TOKEN):
+        if(mode == 'subscribe' and token == TOKEN):
             print('Webhook verified')
             return challenge
     return 'error', 403
