@@ -248,7 +248,10 @@ def updateCosts():
     incoming_json = request.get_json()
     modality = incoming_json["modality"]  #STT OR TTS
     service = incoming_json["service"]
-    cost_value = incoming_json["costValue"]
+    cost_value = int(incoming_json["costValue"])
+
+    print(modality, service, cost_value)
+    return 200
 
     global db_cursor
     db_cursor.execute( \
