@@ -242,7 +242,7 @@ def webhookVerification():
     return 'error', 403
 
 @app.route("/messengerWebhook", methods=['GET'])
-def messengerWebhook():
+def messengerWebhookVerification():
     mode = request.args.get('hub.mode')
     token = request.args.get('hub.token')
     if(not token):
