@@ -201,6 +201,7 @@ def webhook():
 def messengerWebhook():
     try:
         content = request.get_json()
+        print(content)
         content = content['entry'][0]['messaging'][0]
         PSID = content['sender']['id']
         messageBody = content['message']['text']
