@@ -239,6 +239,24 @@ def getUnclassifiedQueries():
     print(unclassified_queries)
     return "success", 200
 
+app.route("/updateCosts", methods=["POST"])
+def getUnclassifiedQueries():
+    incoming_json = request.get_json()
+    modality = incoming_json["modality"]  #STT OR TTS
+    service = incoming_json["service"]
+    cost_value = incoming_json["costValue"]
+
+    global db_cursor
+    db_cursor.execute( \
+        f"""
+        INSERT INTO {modality}Benchmarks (metricId, STTServiceId, benchmarkValue) 
+        VALUES ((SELECT metricId FROM Metrics WHERE name = "Costo"), 
+                (SELECT STTServiceId FROM STTServices WHERE name = "{service}"), 
+                {cost_value})
+        """)
+    return "success", 200
+
+
 
 @app.route("/webhook",methods=["GET"])
 def webhookVerification():
