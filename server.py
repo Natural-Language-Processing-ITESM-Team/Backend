@@ -201,32 +201,30 @@ def webhook():
 def messengerWebhook():
     try:
         content = request.get_json()
-        PSID = 1234
-        messageBody = "Hello"
-        print(content)
+        content = content['entry'][0]['messaging'][0]
+        PSID = content['sender']['id']
+        messageBody = content['message']['text']
+        print(PSID, messageBody)
 
-        #print(PSID, messageBody)
+        global AWS
+        topic_for_client = AWS.dynamo_client.get_item(TableName="topicsForSocialMedia", Key={"clientID": {"S": f"{PSID}"}})
 
-        # global AWS
-        # topic_for_client = AWS.dynamo_client.get_item(TableName="topicsForSocialMedia", Key={"clientID": {"S": f"{PSID}"}})
+        if "Item" not in topic_for_client:
 
-        # if "Item" not in topic_for_client:
-
-        #     AWS.insert_topic(PSID, f"-2")
-        #     current_topic = -2
-        # else:
-        #     current_topic = int(topic_for_client["Item"]["topic"]["S"])
-        # print(f"current_topic is {current_topic}")
-        # text_for_client = choose_cloud_converse_back(messageBody, PSID, current_topic, from_social_media=True)
-        # meta_api.respondMessenger(PSID, text_for_client)
+            AWS.insert_topic(PSID, f"-2")
+            current_topic = -2
+        else:
+            current_topic = int(topic_for_client["Item"]["topic"]["S"])
+        print(f"current_topic is {current_topic}")
+        text_for_client = choose_cloud_converse_back(messageBody, PSID, current_topic, from_social_media=True)
+        meta_api.respondMessenger(PSID, text_for_client)
         return 'success', 200
     except Exception as e:
-        # if('object' in request.get_json() and 'entry' in request.get_json()):
-        #     return 'success', 200
-        # else:
-        #     print(request.get_json())
-        #     return 'error', 404
-        return 'error', 404
+        if('object' in request.get_json() and 'entry' in request.get_json()):
+            return 'success', 200
+        else:
+            print(request.get_json())
+            return 'error', 404
 
 
     
