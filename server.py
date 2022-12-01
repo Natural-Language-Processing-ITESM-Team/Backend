@@ -461,7 +461,7 @@ def getTranscription():
         audio_response_link = GCP.vocalize(text_for_client, AWS)
     elif best_tts_service == "WatsonTTS":
         audio_response_link = vocalize(text_for_client)
-    elif best_stt_service == "AzureTTS":
+    elif best_tts_service == "AzureTTS":
         print("---------------------------")
         print("Calling Azure TTS")
         print("---------------------------")
