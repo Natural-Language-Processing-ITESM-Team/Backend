@@ -1,6 +1,8 @@
 import os
 import time
 import requests
+import json
+import unicodedata
 
 import pymysql
 from bertopic import BERTopic
@@ -407,8 +409,10 @@ def getTranscription():
         headers = {'Content-Type': 'application/json'}
         json = {"data": {"audio_response_link": f"https://buketa.s3.amazonaws.com/{file_key}"}}
         req = requests.post(url, headers=headers, json=json)
-        print(req)
-        transcript, confidence = req.text, 0.5
+        response_map = json.loads(req.text)
+        weird_transcript = response_map["transcripcion"]
+        transcript = unicodedata.normalize("NFKD", weird_transcript).encode("ascii", "ignore")
+        confidence = 0.5
 
     print("--------------------------------------------")
     print(f"prompt {transcript} confidence {confidence}")
