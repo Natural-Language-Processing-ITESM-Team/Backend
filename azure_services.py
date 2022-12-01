@@ -1,7 +1,7 @@
 import os
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
-import system
+
 
 load_dotenv("secrets.env")
 import random
@@ -77,7 +77,7 @@ def vocalize(text_for_client, AWS):
 
     AWS.s3_client.upload_file('output.mp3', 'buketa', filename)
 
-    system.os(f"rm -rf {filename}")
+    os.system(f"rm -rf {filename}")
 
     return f"https://buketa.s3.amazonaws.com/{'transcribe' + filename}"
 
