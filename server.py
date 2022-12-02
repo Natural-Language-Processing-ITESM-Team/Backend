@@ -58,6 +58,7 @@ class Topics(Enum):
     GRADUATES = 3
     ADMISSIONS = 4
     UNCLASSIFIED = -1
+    BEGINNING_OR_ENDING = -2
 
 
 """
@@ -77,25 +78,25 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
     print("-------------------------------")
 
 
-    if current_topic == -2 or client_query == "":
+    if current_topic == Topics.BEGINNING_OR_ENDING.value or client_query == "":
         model_inference = modelo.find_topics(client_query)
         #active_bot = True
         current_topic = model_inference[0][0]
 
     print(f"most likely topic is {current_topic}")
-    if current_topic == 3:
+    if current_topic == Topics.GRADUATES.value:
         # PROCESS FOR GOOGLE DIALOGFLOW
         print("-------------------------------")
         print("Calling for chatbot Dialogflow")
         print("-------------------------------")
         text_for_client = GCP.converse_back(client_query, client_id)
-    elif current_topic == 4:  # admissions
+    elif current_topic == Topics.ADMISSIONS.value:  # admissions
         text_for_client = handle_admissions(client_query)
         print("-------------------------------")
         print("Calling for chatbot Watson Assistant")
         print("-------------------------------")
         #text_for_client = response['output']['generic'][0]['text']
-    elif current_topic == 2:
+    elif current_topic == Topics.CAREERS.value:
         # PROCESS FOR AMAZON LEX
         print("-------------------------------")
         print("Calling for chatbot Amazon Lex")
@@ -103,8 +104,8 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
         text_for_client = AWS.converse_back(client_query, client_id)
         print("chat response is ", text_for_client)
 
-    elif current_topic == -1 or current_topic == 1 or current_topic == 0:
-        if current_topic == -1:
+    elif current_topic == Topics.UNCLASSIFIED.value or current_topic == Topics.SUPPORT.value or current_topic == Topics.ESPORTS.value:
+        if current_topic == Topics.UNCLASSIFIED.value:
             print( f"""
                 INSERT INTO UnclassifiedQueries (query) VALUES ("{client_query}")
                 """)
@@ -112,19 +113,19 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
                 f"""
                 INSERT INTO UnclassifiedQueries (query) VALUES ("{client_query}")
                 """)
-        if current_topic == -1 or current_topic == 0:
+        if current_topic == Topics.UNCLASSIFIED.value or current_topic == Topics.ESPORTS.value:
             text_for_client = "No he entendido, por favor repite tu petición."
-            current_topic = -2
-        if current_topic == 1 or "como estas" in client_query:
+            current_topic = Topics.BEGINNING_OR_ENDING.value
+        if current_topic == Topics.SUPPORT or "como estas" in client_query:  # Interesting all greetings go to support topic.
             print("HORA DE SALUDAR")
             text_for_client = AWS.converse_back(client_query, client_id)
-            current_topic = -2
+            current_topic = Topics.BEGINNING_OR_ENDING.value
 
 
     if "muchas gracias por tu preferencia" in text_for_client:
         active_bot = False
         print("termina conversacion")
-        current_topic = -2
+        current_topic = Topics.BEGINNING_OR_ENDING.value
     #global AWS
     if from_social_media:
         AWS.insert_topic(client_id, str(current_topic))
