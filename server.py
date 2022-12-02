@@ -22,30 +22,30 @@ from amazon_web_services import AmazonWebServices
 from google_cloud_platform import GoogleCloudPlatform
 from azure_services import vocalize as azure_vocalize
 
-db_connection   = pymysql.connect( \
-    host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
-    user="admin", password="vpcOwnChunkCloud", db="benchmarksDB", port=3306, autocommit=True)
+#load_dotenv("secrets.env")
 
-db_cursor = db_connection.cursor()
-
-load_dotenv("secrets.env")
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'private_key.json'
-DIALOGFLOW_PROJECT_ID = 'pr-ctica-1-gcji'
-DIALOGFLOW_LANGUAGE_CODE = 'es'
-SESSION_ID = 'me'
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'private_key.json'
+#DIALOGFLOW_PROJECT_ID = 'pr-ctica-1-gcji'
+#DIALOGFLOW_LANGUAGE_CODE = 'es'
+#SESSION_ID = 'me'
 
 
 IBM_access_key = os.getenv('IAM_AUTHENTICATOR')
 IBM_assistant = os.getenv('ASSISTANT_ID')
 
-TOKEN = os.getenv('TOKEN')
+#TOKEN = os.getenv('TOKEN')
 
 app = Flask(__name__)
 CORS(app)
 
+# Globals
 AWS = AmazonWebServices()
 GCP = GoogleCloudPlatform()
+modelo = BERTopic.load("BERTopicv1")
+db_connection   = pymysql.connect( \
+    host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com",
+    user="admin", password="vpcOwnChunkCloud", db="benchmarksDB", port=3306, autocommit=True)
+db_cursor = db_connection.cursor()
 
 from enum import Enum
 
@@ -68,13 +68,14 @@ class DBQueryHandler:
          # holds query
         retur
 """
+
+
 def choose_cloud_converse_back(client_query: str, client_id, current_topic, from_social_media: bool) -> str:
     # CHOOSE WITH THE MODEL
-    modelo = BERTopic.load("BERTopicv1")
+    global modelo
     print("-------------------------------")
     print(f"Received topic {current_topic}")
     print("-------------------------------")
-
 
     if current_topic == Topics.BEGINNING_OR_ENDING.value or client_query == "":
         model_inference = modelo.find_topics(client_query)
@@ -121,7 +122,6 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
 
 
     if "muchas gracias por tu preferencia" in text_for_client:
-        active_bot = False
         print("termina conversacion")
         current_topic = Topics.BEGINNING_OR_ENDING.value
     #global AWS
@@ -348,8 +348,6 @@ def getTranscription():
     global AWS
     global GCP
     print("route getTranscription")
-    # The way to get my form fields
-    #request.form[]
 
     incoming_json = request.get_json()
 
@@ -358,7 +356,7 @@ def getTranscription():
     tts_measure = incoming_json["ttsMeasure"]
     current_topic = incoming_json["topic"]
     client_id = incoming_json["clientID"]
-    #stt_measure = "latency"
+
     print(f"stt measure is {stt_measure}")
     print(f"tts measure is {tts_measure}")
 
@@ -367,7 +365,6 @@ def getTranscription():
     # El famoso conmutador para stt
     global db_cursor
     if stt_measure == "Latencia":
-
         db_cursor.execute( \
             """select s.name, avg(benchmarkValue) as avg_benchmark
                 from Metrics as m, STTBenchmarks as b, STTServices as s 
@@ -403,7 +400,6 @@ def getTranscription():
     else:
         best_stt_service = stt_measure
 
-
     print(f"best stt service for {stt_measure} is {best_stt_service}")
 
     # El famoso conmutador para tts
@@ -435,17 +431,6 @@ def getTranscription():
 
     print(f"best stt service for {tts_measure} is {best_tts_service}")
 
-
-    # REMOVE THIS WHEN DONE TESTING
-    #best_stt_service = "AzureSTT"
-    """if best_stt_service == "Azure":
-        # PROCESS FOR AZURE TRANSCRIPTION
-        # Download audio file from s3.
-        s3_client.download_file("buketa", file_key, "client.webm")
-        # convert to wav.
-        os.system('ffmpeg -i "client.webm" -vn "client.wav"')
-        transcript = recognize_from_file("client.wav")
-        os.system('rm -rf client.wav')"""
     stt_start_time = time.time()
 
     if best_stt_service == "Transcribe":
@@ -496,15 +481,8 @@ def getTranscription():
         #TODO
         pass
 
-
-    # Remove files for all next rounds.
-    #AWS.delete_object(file_key) amazon needs it kind of
-
-    #os.system('rm -rf client.webm') probably azure needs it
-
     if not transcript: # None or empty sequence
         transcript = "transcript empty"
-
 
     text_for_client, current_topic = choose_cloud_converse_back(transcript, client_id, current_topic, from_social_media=False)
 
@@ -528,8 +506,6 @@ def getTranscription():
         print("---------------------------")
         audio_response_link = azure_vocalize(text_for_client, AWS)
 
-
-
     tts_latency = (time.time() - tts_start_time) * 1000
 
     print("--------------------------------------------")
@@ -544,18 +520,8 @@ def getTranscription():
                     (SELECT TTSServiceId FROM TTSServices WHERE name = "{best_tts_service}"), 
                     {tts_latency})
             """)
-    #return audio_response_link
 
     return {"audio_response_link": audio_response_link, "text_for_client": text_for_client, "topic": current_topic}
-
-
-    # store file in current folder.
-    # authenticated_client.download_file("buketa", file_key[:-4] + "mp3", "audio_for_client.mp3")
-
-    #with open('audio_for_client.mp3', 'r') as f:
-    #    return f
-
-
     
 
 if __name__ == "__main__":
