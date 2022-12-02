@@ -106,6 +106,9 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
 
     elif current_topic == -1 or current_topic == 1 or current_topic == 0:
         if current_topic == -1:
+            print( f"""
+                INSERT INTO UnclassifiedQueries (query) VALUES ({client_query})
+                """)
             db_cursor.execute( \
                 f"""
                 INSERT INTO UnclassifiedQueries (query) VALUES ({client_query})
