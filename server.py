@@ -116,6 +116,7 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
         text_for_client = "No he entendido, por favor repite tu petición."
         current_topic = -2
         if current_topic == 1 or "como estas" in client_query:
+            print("HORA DE SALUDAR")
             text_for_client = AWS.converse_back(client_query, client_id)
             current_topic = -2
 
