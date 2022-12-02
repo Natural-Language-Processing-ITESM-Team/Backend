@@ -96,6 +96,8 @@ class GoogleCloudPlatform:
         output_key = "transcribe/" + filename
         AWS.s3_client.upload_file(filename, 'buketa', output_key)
 
+        os.system(f"rm -rf {filename}")
+
         return f"https://buketa.s3.amazonaws.com/{output_key}"
 
 

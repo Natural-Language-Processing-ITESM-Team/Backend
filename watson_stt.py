@@ -45,14 +45,17 @@ def vocalize(text_for_client: str):
     tts = TextToSpeechV1(authenticator=authenticator)
     tts.set_service_url(tts_url)
 
+    filename = str(random.random())[2:] + ".wav"
 
-
-    with open("output.mp3", 'wb') as audio_file:
+    with open(filename, 'wb') as audio_file:
         res = tts.synthesize(text_for_client, accept='audio/mp3',
                              voice='es-ES_EnriqueV3Voice').get_result()
         audio_file.write(res.content)
 
-    output_key = str(random.random())[2:] + ".mp3"
+    output_key = "transcribe/" + filename
     global AWS
     AWS.s3_client.upload_file('output.mp3', 'buketa', output_key)
+
+    os.system(f"rm -rf {filename}")
+    
     return f"https://buketa.s3.amazonaws.com/{output_key}"
