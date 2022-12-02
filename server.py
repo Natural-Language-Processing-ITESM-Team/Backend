@@ -116,7 +116,7 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
         if current_topic == Topics.UNCLASSIFIED.value or current_topic == Topics.ESPORTS.value:
             text_for_client = "No he entendido, por favor repite tu petición."
             current_topic = Topics.BEGINNING_OR_ENDING.value
-        if current_topic == Topics.SUPPORT or "como estas" in client_query:  # Interesting all greetings go to support topic.
+        if current_topic == Topics.SUPPORT.value or "como estas" in client_query:  # Interesting all greetings go to support topic.
             print("HORA DE SALUDAR")
             text_for_client = AWS.converse_back(client_query, client_id)
             current_topic = Topics.BEGINNING_OR_ENDING.value
