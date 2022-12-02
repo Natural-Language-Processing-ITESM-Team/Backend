@@ -82,7 +82,6 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
         #active_bot = True
         current_topic = model_inference[0][0]
 
-    # TODO if model_inference is topic 1 then lex else google algo así.
     print(f"most likely topic is {current_topic}")
     if current_topic == 3:
         # PROCESS FOR GOOGLE DIALOGFLOW
@@ -113,8 +112,9 @@ def choose_cloud_converse_back(client_query: str, client_id, current_topic, from
                 f"""
                 INSERT INTO UnclassifiedQueries (query) VALUES ("{client_query}")
                 """)
-        text_for_client = "No he entendido, por favor repite tu petición."
-        current_topic = -2
+        if current_topic == -1 or current_topic == 0:
+            text_for_client = "No he entendido, por favor repite tu petición."
+            current_topic = -2
         if current_topic == 1 or "como estas" in client_query:
             print("HORA DE SALUDAR")
             text_for_client = AWS.converse_back(client_query, client_id)
