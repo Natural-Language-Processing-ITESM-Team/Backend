@@ -17,8 +17,6 @@ import meta_api
 from watson_stt import transcribe_audio_file, vocalize
 from azure_services import transcribe_audio_file as azure_transcribe_audio_file
 
-#active_bot = False
-#current_topic = None
 # Local related imports
 from amazon_web_services import AmazonWebServices
 from google_cloud_platform import GoogleCloudPlatform

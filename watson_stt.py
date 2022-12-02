@@ -54,7 +54,7 @@ def vocalize(text_for_client: str):
 
     output_key = "transcribe/" + filename
     global AWS
-    AWS.s3_client.upload_file('output.mp3', 'buketa', output_key)
+    AWS.s3_client.upload_file(filename, 'buketa', output_key)
 
     os.system(f"rm -rf {filename}")
 
