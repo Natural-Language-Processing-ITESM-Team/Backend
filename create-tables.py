@@ -1,8 +1,16 @@
+import os
+
 import pymysql
+from dotenv import load_dotenv
+
+load_dotenv("secrets.env")
+
+rds_pass = os.getenv("RDS_PASS")
+
 
 db_connection   = pymysql.connect( \
     host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com", 
-    user="admin", password="vpcOwnChunkCloud", port=3306, autocommit=True)
+    user="admin", password=rds_pass, port=3306, autocommit=True)
 
 db_cursor = db_connection.cursor()
 
