@@ -1,12 +1,11 @@
+import json
 import os
 import time
-import requests
-import json
 import unicodedata
 
 import pymysql
+import requests
 from bertopic import BERTopic
-from dotenv import load_dotenv
 from flask import Flask
 from flask import request
 from flask_cors import CORS
@@ -14,26 +13,15 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import AssistantV2
 
 import meta_api
-from watson_stt import transcribe_audio_file, vocalize
-from azure_services import transcribe_audio_file as azure_transcribe_audio_file
-
 # Local related imports
 from amazon_web_services import AmazonWebServices
-from google_cloud_platform import GoogleCloudPlatform
+from azure_services import transcribe_audio_file as azure_transcribe_audio_file
 from azure_services import vocalize as azure_vocalize
-
-#load_dotenv("secrets.env")
-
-#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'private_key.json'
-#DIALOGFLOW_PROJECT_ID = 'pr-ctica-1-gcji'
-#DIALOGFLOW_LANGUAGE_CODE = 'es'
-#SESSION_ID = 'me'
-
+from google_cloud_platform import GoogleCloudPlatform
+from watson_stt import transcribe_audio_file, vocalize
 
 IBM_access_key = os.getenv('IAM_AUTHENTICATOR')
 IBM_assistant = os.getenv('ASSISTANT_ID')
-
-#TOKEN = os.getenv('TOKEN')
 
 app = Flask(__name__)
 CORS(app)

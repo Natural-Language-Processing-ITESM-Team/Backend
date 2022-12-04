@@ -3,16 +3,18 @@
 Author: Luis Ignacio Ferro Salinas A01378248
 Last update: november 21st, 2022
 """
+
 # Standard library
+import io
 import os
 import random
-import io
+
 # 3rd party related libraries
 import dialogflow
+import google.cloud.texttospeech as tts
 from google.api_core.exceptions import InvalidArgument
 from google.cloud import speech_v1 as speech
-from google.cloud import texttospeech
-import google.cloud.texttospeech as tts
+
 
 class GoogleCloudPlatform:
     def __init__(self):
