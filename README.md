@@ -113,7 +113,7 @@ conda activate back-env
 
 15. Instalar paquetes de python
 ```bash
-TODO
+pip install -r pipreqs.txt
 ```
 
 16. Por alguna razón el BertTopic intentaba usar gpu con cuda, entonces mi solución fue sobreescribir archivos de la biblioteca de torch, en las partes donde se indica el "device", yo escribía explícitamente "cpu".
