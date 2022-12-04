@@ -2,6 +2,7 @@ import json
 import os
 import time
 import unicodedata
+from dotenv import load_dotenv
 
 import pymysql
 import requests
@@ -20,8 +21,10 @@ from azure_services import vocalize as azure_vocalize
 from google_cloud_platform import GoogleCloudPlatform
 from watson_stt import transcribe_audio_file, vocalize
 
+load_dotenv("secrets.env")
 IBM_access_key = os.getenv('IAM_AUTHENTICATOR')
 IBM_assistant = os.getenv('ASSISTANT_ID')
+rds_pass = os.getenv("RDS_PASS")
 
 app = Flask(__name__)
 CORS(app)
@@ -32,7 +35,7 @@ GCP = GoogleCloudPlatform()
 modelo = BERTopic.load("BERTopicv1")
 db_connection   = pymysql.connect( \
     host="database-benchmarks.cn5bfishmmmb.us-east-1.rds.amazonaws.com",
-    user="admin", password="vpcOwnChunkCloud", db="benchmarksDB", port=3306, autocommit=True)
+    user="admin", password=rds_pass, db="benchmarksDB", port=3306, autocommit=True)
 db_cursor = db_connection.cursor()
 
 from enum import Enum
