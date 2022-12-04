@@ -86,7 +86,7 @@ touch private_key.json
 pip install gdown
 ```
 
-10Descargar el instalador de MiniForge para Linux de nuestra carpeta de Google Drive
+10. Descargar el instalador de MiniForge para Linux de nuestra carpeta de Google Drive
 ```bash
 gdown https://drive.google.com/uc?id=1pcs9sN_doO88au-RgMLM0AEk06IG2Pmm
 ```
