@@ -25,12 +25,12 @@ class AmazonWebServices:
         self.__secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
         self.__session_token = os.getenv("AWS_SESSION_TOKEN")
         self.__region = os.getenv("REGION_NAME")
-        # print("-----------------------")
-        # print(self.__access_key)
-        # print("-----------------------")
-        # print(self.__secret_access_key)
-        # print("-----------------------")
-        # print(self.__session_token)
+        print("-----------------------")
+        print(self.__access_key)
+        print("-----------------------")
+        print(self.__secret_access_key)
+        print("-----------------------")
+        print(self.__session_token)
 
         self.s3_client = boto3.client(
             "s3",

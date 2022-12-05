@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv("../secrets.env")
 import random
 
-from src.amazon_web_services import AmazonWebServices
+from amazon_web_services import AmazonWebServices
 
 
 def transcribe_audio_file(file_key):
