@@ -1,7 +1,7 @@
 """ This file contains the google cloud platform class that represents nlp capabilities with google cloud
 
 Author: Luis Ignacio Ferro Salinas A01378248
-Last update: november 21st, 2022
+Last update: december 4th, 2022
 """
 
 # Standard library
@@ -18,22 +18,22 @@ from google.cloud import speech_v1 as speech
 
 class GoogleCloudPlatform:
     def __init__(self):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'private_key.json'
-        self.DIALOGFLOW_PROJECT_ID = 'pr-ctica-1-gcji'
-        self.DIALOGFLOW_LANGUAGE_CODE = 'es'
-        self.SESSION_ID = 'me'
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "private_key.json"
+        self.DIALOGFLOW_PROJECT_ID = "pr-ctica-1-gcji"
+        self.DIALOGFLOW_LANGUAGE_CODE = "es"
+        self.SESSION_ID = "me"
 
     def transcribe_audio_file(self, file_key, AWS):
-        #file_uri = "s3://buketa/" + file_key
+        # file_uri = "s3://buketa/" + file_key
         client = speech.SpeechClient()
 
         # Download audio file from s3.
-        #print(f"in google stt, key is {file_key}")
+        # print(f"in google stt, key is {file_key}")
 
         file_name = file_key[11:]
         AWS.s3_client.download_file("buketa", file_key, file_name)
         # convert to wav.
-        #os.system('ffmpeg -i "client.webm" -vn "client.wav"')
+        # os.system('ffmpeg -i "client.webm" -vn "client.wav"')
 
         with io.open(file_name, "rb") as audio_file:
             content = audio_file.read()
@@ -61,27 +61,31 @@ class GoogleCloudPlatform:
     def converse_back(self, client_string, client_id):
         session_client = dialogflow.SessionsClient()
         session = session_client.session_path(self.DIALOGFLOW_PROJECT_ID, client_id)
-        text_input = dialogflow.types.TextInput(text=client_string, language_code=self.DIALOGFLOW_LANGUAGE_CODE)
+        text_input = dialogflow.types.TextInput(
+            text=client_string, language_code=self.DIALOGFLOW_LANGUAGE_CODE
+        )
         query_input = dialogflow.types.QueryInput(text=text_input)
         try:
-            response = session_client.detect_intent(session=session, query_input=query_input)
+            response = session_client.detect_intent(
+                session=session, query_input=query_input
+            )
         except InvalidArgument:
             raise
 
         text_for_client = ""
         for json_msg in response.query_result.fulfillment_messages:
-            #print(dir(json_msg.text))
+            # print(dir(json_msg.text))
             text_for_client += json_msg.text.text[0]
-            #text_for_client += json_msg.text
+            # text_for_client += json_msg.text
 
-        #text_for_client = response.query_result.fulfillment_text
+        # text_for_client = response.query_result.fulfillment_text
         return text_for_client
 
     def vocalize(self, text_for_client, AWS):
-        language_code = "-".join('es-US-Neural2-A'.split("-")[:2])
+        language_code = "-".join("es-US-Neural2-A".split("-")[:2])
         text_input = tts.SynthesisInput(text=text_for_client)
         voice_params = tts.VoiceSelectionParams(
-            language_code=language_code, name='es-US-Neural2-A'
+            language_code=language_code, name="es-US-Neural2-A"
         )
         audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
 
@@ -94,16 +98,13 @@ class GoogleCloudPlatform:
 
         with open(filename, "wb") as out:
             out.write(response.audio_content)
-            #print(f'Generated speech saved to "{filename}"')
+            # print(f'Generated speech saved to "{filename}"')
         output_key = "transcribe/" + filename
-        AWS.s3_client.upload_file(filename, 'buketa', output_key)
+        AWS.s3_client.upload_file(filename, "buketa", output_key)
 
         os.system(f"rm -rf {filename}")
 
         return f"https://buketa.s3.amazonaws.com/{output_key}"
-
-
-
 
 
 config = dict(language_code="es-MX")
