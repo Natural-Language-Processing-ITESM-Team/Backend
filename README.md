@@ -43,7 +43,7 @@ sudo apt install ffmpeg
 7. Conseguir claves para servicios.
 
 Para conseguir las claves para diferentes servicios de nube, se explica el proceso más detallado en la [wiki](https://github.com/Natural-Language-Processing-ITESM-Team/Wiki/wiki). 
-Cuando se tengan todas las claves, se debe generar un archivo "private_key.json", y un archivo "secrets.env", ambos archivos deben de estar colocados en el directorio Backend.
+Cuando se tengan todas las claves, se debe generar un archivo "private_key.json", y un archivo "secrets.env", ambos archivos deben de estar colocados en el directorio **src**.
 
 Los contenidos del archivo "private_key.json" se explican en la [wiki](https://github.com/Natural-Language-Processing-ITESM-Team/Wiki/wiki) pero los contenidos del archivo "secrets.env" deben ser los siguientes, sustituyendo en cada clave el valor correspondiente.
 ```
@@ -75,7 +75,11 @@ WHATSAPP_NUMBER=<>
 TOKEN=<>
 ```
 
-8. Crear y llenar archivos de credenciales, yo lo hice en la consola con nano pero se puede usar algún otro como vim o emacs.
+8. Crear y llenar archivos de credenciales en folder src, yo lo hice en la consola con nano pero se puede usar algún otro como vim o emacs.
+```bash
+cd src
+```
+
 ```bash
 touch secrets.env
 touch private_key.json
