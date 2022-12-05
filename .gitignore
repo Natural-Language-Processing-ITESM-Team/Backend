@@ -128,5 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-secrets.env
-private_key.json
+src/secrets.env
+src/private_key.json

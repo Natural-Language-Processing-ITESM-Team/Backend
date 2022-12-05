@@ -29,7 +29,7 @@ from src.azure_services import vocalize as azure_vocalize
 from src.google_cloud_platform import GoogleCloudPlatform
 from src.watson_stt import transcribe_audio_file, vocalize
 
-load_dotenv("secrets.env")
+load_dotenv("src/secrets.env")
 IBM_access_key = os.getenv("IAM_AUTHENTICATOR")
 IBM_assistant = os.getenv("ASSISTANT_ID")
 rds_pass = os.getenv("RDS_PASS")

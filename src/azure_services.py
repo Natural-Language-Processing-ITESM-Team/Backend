@@ -3,7 +3,7 @@ import os
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
 
-load_dotenv("../secrets.env")
+load_dotenv("secrets.env")
 import random
 
 from src.amazon_web_services import AmazonWebServices

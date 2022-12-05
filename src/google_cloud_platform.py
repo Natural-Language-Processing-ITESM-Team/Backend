@@ -18,7 +18,7 @@ from google.cloud import speech_v1 as speech
 
 class GoogleCloudPlatform:
     def __init__(self):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../private_key.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "private_key.json"
         self.DIALOGFLOW_PROJECT_ID = "pr-ctica-1-gcji"
         self.DIALOGFLOW_LANGUAGE_CODE = "es"
         self.SESSION_ID = "me"

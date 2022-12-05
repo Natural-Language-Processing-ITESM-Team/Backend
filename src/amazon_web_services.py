@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 
 class AmazonWebServices:
     def __init__(self):
-        load_dotenv("../secrets.env")
+        load_dotenv("secrets.env")
 
         # Read credentials.
         self.__access_key = os.getenv("AWS_ACCESS_KEY_ID")
