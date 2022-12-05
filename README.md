@@ -95,7 +95,7 @@ pip install gdown
 gdown https://drive.google.com/uc?id=1pcs9sN_doO88au-RgMLM0AEk06IG2Pmm
 ```
 
-1Instalar MiniForge
+11. Instalar MiniForge
 ```bash
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
