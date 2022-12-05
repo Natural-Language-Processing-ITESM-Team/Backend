@@ -236,7 +236,7 @@ def messengerWebhook():
             print(request.get_json())
             return "error", 404
 
-
+"""
 @app.route("/getUnclassifiedQueries", methods=["POST"])
 def getUnclassifiedQueries():
     incoming_json = request.get_json()
@@ -253,7 +253,7 @@ def getUnclassifiedQueries():
         return {"unclassified_queries": unclassified_queries}
     else:
         return "error", 404
-
+"""
 
 @app.route("/updateCosts", methods=["POST"])
 def updateCosts():
