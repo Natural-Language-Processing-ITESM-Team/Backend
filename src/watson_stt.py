@@ -6,7 +6,7 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import SpeechToTextV1
 from ibm_watson import TextToSpeechV1
 
-from amazon_web_services import AmazonWebServices
+from src.amazon_web_services import AmazonWebServices
 
 load_dotenv("../secrets.env")
 AWS = AmazonWebServices()
