@@ -1,4 +1,4 @@
-""" This file single integrates all the components for the HERA system, in the necessary service routes for the client.
+""" This file integrates all the components for the HERA system, in the necessary service routes for the client.
 
 Authors:
 - Luis Ignacio Ferro Salinas
@@ -22,12 +22,12 @@ from flask_cors import CORS
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import AssistantV2
 
-import meta_api
-from amazon_web_services import AmazonWebServices
-from azure_services import transcribe_audio_file as azure_transcribe_audio_file
-from azure_services import vocalize as azure_vocalize
-from google_cloud_platform import GoogleCloudPlatform
-from watson_stt import transcribe_audio_file, vocalize
+from src import meta_api
+from src.amazon_web_services import AmazonWebServices
+from src.azure_services import transcribe_audio_file as azure_transcribe_audio_file
+from src.azure_services import vocalize as azure_vocalize
+from src.google_cloud_platform import GoogleCloudPlatform
+from src.watson_stt import transcribe_audio_file, vocalize
 
 load_dotenv("secrets.env")
 IBM_access_key = os.getenv("IAM_AUTHENTICATOR")

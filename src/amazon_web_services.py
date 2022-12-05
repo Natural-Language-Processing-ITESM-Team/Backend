@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 
 class AmazonWebServices:
     def __init__(self):
-        load_dotenv("secrets.env")
+        load_dotenv("../secrets.env")
 
         # Read credentials.
         self.__access_key = os.getenv("AWS_ACCESS_KEY_ID")
@@ -109,7 +109,7 @@ class AmazonWebServices:
         # print("I will place transcript in " + file_key[:-4] + "json")
         # store file in current folder.
         self.s3_client.download_file("buketa", file_key[:-4] + "json", "helloback.json")
-        with open("helloback.json", "r") as f:
+        with open("../helloback.json", "r") as f:
             json_data = json.load(f)
         # print(F"AWS TRANSCRIBE SPEECH TO TEXT {json_data}")
         avg_confidence = 0

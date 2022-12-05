@@ -3,7 +3,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-load_dotenv("secrets.env")
+load_dotenv("../secrets.env")
 
 WHATSAPP_NUMBER_ID = os.getenv("WHATSAPP_NUMBER_ID")
 WHATSAPP_ACCESS_TOKEN = os.getenv("WHATSAPP_ACCESS_TOKEN")
